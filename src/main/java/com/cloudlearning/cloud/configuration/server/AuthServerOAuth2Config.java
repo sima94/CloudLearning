@@ -1,7 +1,5 @@
 package com.cloudlearning.cloud.configuration.server;
 
-//import com.cloudlearning.cloud.services.UserDetailsServiceImpl;
-import com.cloudlearning.cloud.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
