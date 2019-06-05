@@ -1,14 +1,16 @@
 package com.cloudlearning.cloud.models.security;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
@@ -27,6 +29,7 @@ public class User implements UserDetails, Serializable {
     private String username;
 
     @Column(name = "PASSWORD")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Column(name = "ACCOUNT_EXPIRED")
@@ -41,14 +44,15 @@ public class User implements UserDetails, Serializable {
     @Column(name = "ENABLED")
     private boolean enabled;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "USERS_AUTHORITIES", joinColumns = @JoinColumn(name = "USER_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "AUTHORITY_ID", referencedColumnName = "ID"))
-    @OrderBy
-    @JsonIgnore
-    private Collection<Authority> authorities;
+    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @JoinColumn(name = "AUTHORITY_ID")
+    private Authority authority;
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        ArrayList authorities = new ArrayList<Authority>();
+        authorities.add(authority);
         return authorities;
     }
 
@@ -63,16 +67,19 @@ public class User implements UserDetails, Serializable {
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return !accountExpired;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return !accountLocked;
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return !credentialsExpired;
     }
