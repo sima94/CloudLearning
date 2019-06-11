@@ -28,7 +28,7 @@ public class HibernateConfiguration {
     }
 
     @Bean
-    public PersistenceExceptionTranslationPostProcessor exceptionTraslation() {
+    public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
         return new PersistenceExceptionTranslationPostProcessor();
     }
 

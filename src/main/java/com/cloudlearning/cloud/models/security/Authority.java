@@ -2,6 +2,7 @@ package com.cloudlearning.cloud.models.security;
 
 import javax.persistence.*;
 
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +21,7 @@ public class Authority implements GrantedAuthority {
     private Long id;
 
     @Column(name = "NAME")
+    @Getter(AccessLevel.PRIVATE)
     private String name;
 
     @Override
