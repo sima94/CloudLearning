@@ -47,7 +47,7 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
             ResponseStatusException ex) {
         ApiError apiError = new ApiError(ex.getStatus());
         apiError.setMessage(ex.getReason());
-        return new ResponseEntity<>(apiError, apiError.getStatus());
+        return new ResponseEntity<>(apiError, apiError.getHttpStatus());
     }
 
 }

@@ -68,8 +68,13 @@ public class UserController {
     @PutMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     public User updateUser(@PathVariable Long id, @Validated(User.ValidationUpdate.class) @RequestBody User user){
-        user.setId(id);
-        return userService.update(user);
+        try {
+            user.setId(id);
+            return userService.update(user);
+        } catch (EntityNotExistException e){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, e.getMessage(), e);
+        }
     }
 
     @PostMapping(path = "/change/password")
