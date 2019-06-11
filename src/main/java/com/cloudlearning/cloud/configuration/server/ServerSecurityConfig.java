@@ -2,7 +2,6 @@ package com.cloudlearning.cloud.configuration.server;
 
 import com.cloudlearning.cloud.configuration.encryption.Encoders;
 import com.cloudlearning.cloud.services.user.UserService;
-import com.cloudlearning.cloud.services.user.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
