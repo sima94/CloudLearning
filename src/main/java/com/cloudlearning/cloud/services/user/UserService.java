@@ -6,7 +6,6 @@ import com.cloudlearning.cloud.exeptions.entity.EntityNotExistException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 public interface UserService extends UserDetailsService {
 

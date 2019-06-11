@@ -54,11 +54,7 @@ public class UserServiceImpl implements UserService {
             throw new EntityAlreadyExistExeption("api.error.user.usernameAlreadyExist");
         }
 
-        Authority authority = authorityRepository.findOne(user.getAuthority().getId());
-
-        if (authority==null) {
-            throw new EntityNotExistException("api.error.authority.notFound");
-        }
+        Authority authority = authorityRepository.findById(user.getAuthority().getId()).orElseThrow(()-> new EntityNotExistException("api.error.authority.notFound"));
 
         user.setAuthority(authority);
 
@@ -72,11 +68,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User update(User user) {
 
-        User oldUser = userRepository.findOne(user.getId());
-
-        if (oldUser == null) {
-            throw new EntityNotExistException("api.error.user.notExist");
-        }
+        User oldUser = userRepository.findById(user.getId()).orElseThrow(()-> new EntityNotExistException("api.error.user.notExist"));
 
         oldUser.setUsername(user.getUsername());
         oldUser.setAccountExpired(user.isAccountExpired());
@@ -90,7 +82,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void changePassword(User user) throws Exception {
 
-        User oldUser = userRepository.findOne(user.getId());
+        User oldUser = userRepository.findById(user.getId()).get();
 
         if (!passwordEncoder.userPasswordEncoder().matches(user.getPassword(), oldUser.getPassword())){
             BeanPropertyBindingResult result = new BeanPropertyBindingResult(user, "user");
@@ -109,11 +101,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User find(Long id) throws EntityNotExistException {
-        User user = userRepository.findOne(id);
-
-        if (user == null){
-            throw new EntityNotExistException("api.error.user.notExist");
-        }
+        User user = userRepository.findById(id).orElseThrow(()-> new EntityNotExistException("api.error.user.notExist"));
 
         return user;
     }
@@ -126,7 +114,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(Long id) throws EntityNotExistException {
         try {
-            userRepository.delete(id);
+            userRepository.deleteById(id);
         }catch (EmptyResultDataAccessException e){
             throw new EntityNotExistException("api.error.user.notExist");
         }catch (Exception e){
