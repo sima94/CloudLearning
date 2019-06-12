@@ -2,7 +2,7 @@ package com.cloudlearning.cloud.configuration.server;
 
 import com.cloudlearning.cloud.configuration.encryption.Encoders;
 import com.cloudlearning.cloud.services.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,13 +19,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @Order(SecurityProperties.BASIC_AUTH_ORDER)
 @Import(Encoders.class)
+@AllArgsConstructor
 public class ServerSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private UserService userDetailsService;
+    final private UserService userDetailsService;
 
-    @Autowired
-    private PasswordEncoder userPasswordEncoder;
+    final private PasswordEncoder userPasswordEncoder;
 
     @Override
     @Bean

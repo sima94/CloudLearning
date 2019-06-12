@@ -1,6 +1,6 @@
 package com.cloudlearning.cloud.services.user;
 
-import com.cloudlearning.cloud.exeptions.entity.EntityAlreadyExistExeption;
+import com.cloudlearning.cloud.exeptions.entity.EntityException;
 import com.cloudlearning.cloud.models.security.User;
 import com.cloudlearning.cloud.exeptions.entity.EntityNotExistException;
 import org.springframework.data.domain.Page;
@@ -13,7 +13,7 @@ public interface UserService extends UserDetailsService {
 
     Page<User> findAll(Pageable pageable);
 
-    User create(User user) throws EntityAlreadyExistExeption;
+    User create(User user) throws EntityException;
 
     User update(User user);
 

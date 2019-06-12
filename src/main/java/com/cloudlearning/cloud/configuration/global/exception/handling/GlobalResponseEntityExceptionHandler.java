@@ -5,6 +5,7 @@ import com.cloudlearning.cloud.configuration.global.exception.handling.errors.Ap
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,7 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
@@ -27,11 +27,12 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
         status = HttpStatus.UNPROCESSABLE_ENTITY;
 
         //Get all validation errors
-        List validationErrors = ex.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .map(x -> new ApiValidationError(x.getObjectName(), x.getField(), x.getRejectedValue(),x.getDefaultMessage()))
-                .collect(Collectors.toList());
+        List<ApiValidationError> validationErrors = new ArrayList<>();
+        for (FieldError x : ex.getBindingResult()
+                .getFieldErrors()) {
+            ApiValidationError apiValidationError = new ApiValidationError(x.getObjectName(), x.getField(), x.getRejectedValue(), x.getDefaultMessage());
+            validationErrors.add(apiValidationError);
+        }
 
         ApiError error = new ApiError(status);
         error.setMessage("api.error.validation");
@@ -45,7 +46,8 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
     @ExceptionHandler(ResponseStatusException.class)
     protected ResponseEntity<Object> handleEntityNotFound(
             ResponseStatusException ex) {
-        ApiError apiError = new ApiError(ex.getStatus());
+        ApiError apiError;
+        apiError = new ApiError(ex.getStatus());
         apiError.setMessage(ex.getReason());
         return new ResponseEntity<>(apiError, apiError.getHttpStatus());
     }

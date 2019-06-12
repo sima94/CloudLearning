@@ -8,7 +8,7 @@ import com.cloudlearning.cloud.models.security.Authority;
 import com.cloudlearning.cloud.models.security.User;
 import com.cloudlearning.cloud.repositories.AuthorityRepository;
 import com.cloudlearning.cloud.repositories.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -23,16 +23,15 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private AuthorityRepository authorityRepository;
+    final private UserRepository userRepository;
 
-    @Autowired
-    private Encoders passwordEncoder;
+    final private AuthorityRepository authorityRepository;
+
+    final private Encoders passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -55,7 +54,6 @@ public class UserServiceImpl implements UserService {
         }
 
         Authority authority = authorityRepository.findById(user.getAuthority().getId()).orElseThrow(()-> new EntityNotExistException("api.error.authority.notFound"));
-
         user.setAuthority(authority);
 
         String password = user.getPassword();
@@ -101,9 +99,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User find(Long id) throws EntityNotExistException {
-        User user = userRepository.findById(id).orElseThrow(()-> new EntityNotExistException("api.error.user.notExist"));
-
-        return user;
+        return userRepository.findById(id).orElseThrow(()-> new EntityNotExistException("api.error.user.notExist"));
     }
 
     @Override

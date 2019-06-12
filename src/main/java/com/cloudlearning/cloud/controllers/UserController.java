@@ -1,10 +1,10 @@
 package com.cloudlearning.cloud.controllers;
 
-import com.cloudlearning.cloud.exeptions.entity.EntityException;
+import com.cloudlearning.cloud.exeptions.entity.EntityAlreadyExistExeption;
 import com.cloudlearning.cloud.models.security.User;
 import com.cloudlearning.cloud.exeptions.entity.EntityNotExistException;
 import com.cloudlearning.cloud.services.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -18,9 +18,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/v1/user")
+@AllArgsConstructor
 public class UserController {
 
-    @Autowired
     UserService userService;
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -40,15 +40,14 @@ public class UserController {
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
     public User getMe(OAuth2Authentication principal){
-        User user = (User)principal.getUserAuthentication().getPrincipal();
-        return user;
+        return (User)principal.getUserAuthentication().getPrincipal();
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseBody
-    public Page<User> getUsers(@PageableDefault(value = 100) Pageable pageable){
+    public Page<User> getUsers(@PageableDefault Pageable pageable){
         return userService.findAll(pageable);
     }
 
@@ -59,7 +58,10 @@ public class UserController {
     public User createUser(@Validated(User.ValidationCreate.class) @RequestBody User user){
         try {
             return userService.create(user);
-        } catch (EntityException e) {
+        } catch (EntityNotExistException e){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, e.getMessage(), e);
+        } catch (EntityAlreadyExistExeption e){
             throw new ResponseStatusException(
                     HttpStatus.EXPECTATION_FAILED, e.getMessage(), e);
         }
