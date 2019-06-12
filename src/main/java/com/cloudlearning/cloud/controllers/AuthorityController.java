@@ -2,7 +2,7 @@ package com.cloudlearning.cloud.controllers;
 
 import com.cloudlearning.cloud.models.security.Authority;
 import com.cloudlearning.cloud.services.authority.AuthorityService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -13,14 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("api/v1/authority")
+@AllArgsConstructor
 public class AuthorityController {
 
-    @Autowired
-    AuthorityService authorityService;
+    final private AuthorityService authorityService;
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Page<Authority> getAuthority(@PageableDefault(value = 10) Pageable pageable){
+    public Page<Authority> getAuthority(@PageableDefault Pageable pageable){
         return authorityService.findAll(pageable);
     }
 

@@ -1,6 +1,7 @@
 package com.cloudlearning.cloud.configuration.server;
 
 import com.cloudlearning.cloud.services.user.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -24,20 +25,17 @@ import javax.sql.DataSource;
 @EnableAuthorizationServer
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Import(ServerSecurityConfig.class)
+@AllArgsConstructor
 public class AuthServerOAuth2Config extends AuthorizationServerConfigurerAdapter {
 
-    @Autowired
     @Qualifier("dataSource")
-    private DataSource dataSource;
+    final private DataSource dataSource;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    final private AuthenticationManager authenticationManager;
 
-    @Autowired
-    private UserService userDetailsService;
+    final private UserService userDetailsService;
 
-    @Autowired
-    private PasswordEncoder oauthClientPasswordEncoder;
+    final private PasswordEncoder oauthClientPasswordEncoder;
 
     @Bean
     public TokenStore tokenStore() {
