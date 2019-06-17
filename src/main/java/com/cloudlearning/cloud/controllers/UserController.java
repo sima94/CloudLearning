@@ -4,23 +4,26 @@ import com.cloudlearning.cloud.exeptions.entity.EntityAlreadyExistExeption;
 import com.cloudlearning.cloud.models.security.User;
 import com.cloudlearning.cloud.exeptions.entity.EntityNotExistException;
 import com.cloudlearning.cloud.services.user.UserService;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.security.Principal;
+
 @RestController
 @RequestMapping("/api/v1/user")
-@AllArgsConstructor
 public class UserController {
 
+    @Autowired
     UserService userService;
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -39,8 +42,11 @@ public class UserController {
     @GetMapping(path = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
-    public User getMe(OAuth2Authentication principal){
-        return (User)principal.getUserAuthentication().getPrincipal();
+    @PreAuthorize("isFullyAuthenticated()")
+    public UserDetails getMe(Principal principal){
+         String username = principal.getName();
+         UserDetails user = userService.loadUserByUsername(username);
+         return user;
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)

@@ -2,13 +2,12 @@ package com.cloudlearning.cloud.services.user;
 
 import com.cloudlearning.cloud.configuration.encryption.Encoders;
 import com.cloudlearning.cloud.exeptions.entity.EntityAlreadyExistExeption;
-import com.cloudlearning.cloud.exeptions.entity.EntityException;
 import com.cloudlearning.cloud.exeptions.entity.EntityNotExistException;
 import com.cloudlearning.cloud.models.security.Authority;
 import com.cloudlearning.cloud.models.security.User;
 import com.cloudlearning.cloud.repositories.AuthorityRepository;
 import com.cloudlearning.cloud.repositories.UserRepository;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -23,29 +22,24 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    @Autowired
+    private UserRepository userRepository;
 
-    final private UserRepository userRepository;
+    @Autowired
+    private AuthorityRepository authorityRepository;
 
-    final private AuthorityRepository authorityRepository;
-
-    final private Encoders passwordEncoder;
+    @Autowired
+    private Encoders passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
-
-        if (user != null) {
-            return user;
-        }
-
-        throw new UsernameNotFoundException(username);
+        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(username));
     }
 
     @Override
-    public User create(User user) throws EntityException {
+    public User create(User user) {
 
         List<User> existing = userRepository.findByUsernameOrId(user.getUsername(),user.getId());
 
@@ -53,7 +47,7 @@ public class UserServiceImpl implements UserService {
             throw new EntityAlreadyExistExeption("api.error.user.usernameAlreadyExist");
         }
 
-        Authority authority = authorityRepository.findById(user.getAuthority().getId()).orElseThrow(()-> new EntityNotExistException("api.error.authority.notFound"));
+        Authority authority = authorityRepository.findById(user.getAuthority().getId()).orElseThrow(()-> new EntityNotExistException("api.error.authority.notExist"));
         user.setAuthority(authority);
 
         String password = user.getPassword();
@@ -92,8 +86,8 @@ public class UserServiceImpl implements UserService {
         }
 
         String newPassword = user.getNewPassword();
-        String newPasswordEncodeed = passwordEncoder.userPasswordEncoder().encode(newPassword);
-        oldUser.setPassword(newPasswordEncodeed);
+        String newPasswordEncoded = passwordEncoder.userPasswordEncoder().encode(newPassword);
+        oldUser.setPassword(newPasswordEncoded);
         userRepository.save(oldUser);
     }
 
@@ -113,8 +107,6 @@ public class UserServiceImpl implements UserService {
             userRepository.deleteById(id);
         }catch (EmptyResultDataAccessException e){
             throw new EntityNotExistException("api.error.user.notExist");
-        }catch (Exception e){
-            e.printStackTrace();
         }
     }
 }
