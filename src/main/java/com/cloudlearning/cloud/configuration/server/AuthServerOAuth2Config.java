@@ -29,13 +29,16 @@ import javax.sql.DataSource;
 public class AuthServerOAuth2Config extends AuthorizationServerConfigurerAdapter {
 
     @Qualifier("dataSource")
-    final private DataSource dataSource;
+    private DataSource dataSource;
 
-    final private AuthenticationManager authenticationManager;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-    final private UserService userDetailsService;
+    @Autowired
+    private UserService userDetailsService;
 
-    final private PasswordEncoder oauthClientPasswordEncoder;
+    @Autowired
+    private PasswordEncoder oauthClientPasswordEncoder;
 
     @Bean
     public TokenStore tokenStore() {

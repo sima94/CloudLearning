@@ -2,10 +2,7 @@ package com.cloudlearning.cloud.models.security;
 
 import javax.persistence.*;
 
-import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
 @Entity
@@ -13,6 +10,8 @@ import org.springframework.security.core.GrantedAuthority;
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Authority implements GrantedAuthority {
 
     @Id

@@ -13,7 +13,7 @@ public interface UserService extends UserDetailsService {
 
     Page<User> findAll(Pageable pageable);
 
-    User create(User user) throws EntityException;
+    User create(User user);
 
     User update(User user);
 
