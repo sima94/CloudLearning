@@ -14,7 +14,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
@@ -263,16 +262,18 @@ public class UserServiceImplTests {
 
         User testUser = new User();
         testUser.setId(1L);
+        testUser.setUsername("oldUser@test.com");
         testUser.setPassword(oldPassword);
         testUser.setNewPassword(newPassword);
         testUser.setConfirmNewPassword(newPassword);
 
         User oldUser = new User();
         oldUser.setId(1L);
+        oldUser.setUsername("oldUser@test.com");
         oldUser.setPassword(oldPasswordHash);
 
         Mockito.when(encodersMock.userPasswordEncoder()).thenReturn(userPasswordEncoder);
-        Mockito.when(userRepositoryMock.findById(testUser.getId())).thenReturn(Optional.of(oldUser));
+        Mockito.when(userRepositoryMock.findByUsername(testUser.getUsername())).thenReturn(Optional.of(oldUser));
 
         Exception exception = null;
         try{

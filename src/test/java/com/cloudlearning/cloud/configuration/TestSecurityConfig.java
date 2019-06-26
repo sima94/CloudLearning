@@ -17,19 +17,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
-//@ComponentScan("com.cloudlearning")
-//@EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled=true, prePostEnabled=true)
 public class TestSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final String RESOURCE_ID = "resource-server-rest-api";
-    private static final String SECURED_READ_SCOPE = "#oauth2.hasScope('read')";
-    private static final String SECURED_WRITE_SCOPE = "#oauth2.hasScope('write')";
     private static final String SECURED_PATTERN = "/api/**";
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.requestMatchers()
+        http.csrf().disable().requestMatchers()
                 .antMatchers(SECURED_PATTERN);
     }
 
@@ -42,13 +37,14 @@ public class TestSecurityConfig extends WebSecurityConfigurerAdapter {
         public void init(AuthenticationManagerBuilder auth) throws Exception {
             auth.inMemoryAuthentication().withUser("admin").password("admin").roles("ADMIN");
             auth.inMemoryAuthentication().withUser("professor").password("professor").roles("PROFESSOR");
+            auth.inMemoryAuthentication().withUser("student").password("student").roles("STUDENT");
         }
     }
 
     @Bean
     public UserDetailsService userDetailsService(){
         GrantedAuthority authority = new SimpleGrantedAuthority("ADMIN");
-        UserDetails userDetails = (UserDetails)new User("admin", "admin", Arrays.asList(authority));
+        UserDetails userDetails = new User("admin", "admin", Arrays.asList(authority));
         return new InMemoryUserDetailsManager(Arrays.asList(userDetails));
     }
 }
