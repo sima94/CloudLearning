@@ -7,6 +7,7 @@ import com.cloudlearning.cloud.models.security.Authority;
 import com.cloudlearning.cloud.models.security.User;
 import com.cloudlearning.cloud.repositories.AuthorityRepository;
 import com.cloudlearning.cloud.repositories.UserRepository;
+import com.cloudlearning.cloud.services.user.exceptions.AuthorityEntityNotExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -47,7 +48,7 @@ public class UserServiceImpl implements UserService {
             throw new EntityAlreadyExistExeption("api.error.user.usernameAlreadyExist");
         }
 
-        Authority authority = authorityRepository.findById(user.getAuthority().getId()).orElseThrow(()-> new EntityNotExistException("api.error.authority.notExist"));
+        Authority authority = authorityRepository.findById(user.getAuthority().getId()).orElseThrow(()-> new AuthorityEntityNotExistException("api.error.authority.notExist"));
         user.setAuthority(authority);
 
         String password = user.getPassword();
@@ -74,7 +75,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void changePassword(User user) throws Exception {
 
-        User oldUser = userRepository.findById(user.getId()).get();
+        User oldUser = userRepository.findByUsername(user.getUsername()).get();
 
         if (!passwordEncoder.userPasswordEncoder().matches(user.getPassword(), oldUser.getPassword())){
             BeanPropertyBindingResult result = new BeanPropertyBindingResult(user, "user");

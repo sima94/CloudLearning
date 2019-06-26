@@ -4,6 +4,7 @@ import com.cloudlearning.cloud.exeptions.entity.EntityAlreadyExistExeption;
 import com.cloudlearning.cloud.models.security.User;
 import com.cloudlearning.cloud.exeptions.entity.EntityNotExistException;
 import com.cloudlearning.cloud.services.user.UserService;
+import com.cloudlearning.cloud.services.user.exceptions.AuthorityEntityNotExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -64,7 +64,7 @@ public class UserController {
     public User createUser(@Validated(User.ValidationCreate.class) @RequestBody User user){
         try {
             return userService.create(user);
-        } catch (EntityNotExistException e){
+        } catch (AuthorityEntityNotExistException e){
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, e.getMessage(), e);
         } catch (EntityAlreadyExistExeption e){
@@ -74,6 +74,7 @@ public class UserController {
     }
 
     @PutMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(value = HttpStatus.OK)
     public User updateUser(@PathVariable Long id, @Validated(User.ValidationUpdate.class) @RequestBody User user){
         try {
@@ -86,10 +87,11 @@ public class UserController {
     }
 
     @PostMapping(path = "/change/password")
+    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void changePassword(@Validated(User.ValidationChangePassword.class) @RequestBody User user, OAuth2Authentication principal) throws Exception {
-        User oauthUser = (User)principal.getUserAuthentication().getPrincipal();
-        user.setId(oauthUser.getId());
+    public void changePassword(@Validated(User.ValidationChangePassword.class) @RequestBody User user, Principal principal) throws Exception {
+        String username = principal.getName();
+        user.setUsername(username);
         userService.changePassword(user);
     }
 

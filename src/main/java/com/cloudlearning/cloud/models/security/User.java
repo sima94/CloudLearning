@@ -51,12 +51,13 @@ public class User implements UserDetails, Serializable {
     private String password;
 
     @Transient
-    @NotNull(groups = {ValidationChangePassword.class}, message = "api.error.validation.password.isRequired")
-    @Size(groups = {ValidationCreate.class, ValidationChangePassword.class}, min = 6, message = "api.error.validation.password.minSizeLimitation.6")
+    @NotNull(groups = {ValidationChangePassword.class}, message = "api.error.validation.newPassword.isRequired")
+    @Size(groups = {ValidationCreate.class, ValidationChangePassword.class}, min = 6, message = "api.error.validation.newPassword.minSizeLimitation.6")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String newPassword;
 
     @Transient
+    @NotNull(groups = {ValidationChangePassword.class}, message = "api.error.validation.confirmNewPassword.isRequired")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String confirmNewPassword;
 
@@ -81,7 +82,7 @@ public class User implements UserDetails, Serializable {
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         ArrayList authorities = new ArrayList<Authority>();
-        authorities.add(authority);
+        authorities.add(this.getAuthority());
         return authorities;
     }
 
