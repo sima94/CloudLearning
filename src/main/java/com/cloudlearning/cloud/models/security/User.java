@@ -2,6 +2,7 @@ package com.cloudlearning.cloud.models.security;
 
 import com.cloudlearning.cloud.configuration.validation.annotations.FieldsDiversity;
 import com.cloudlearning.cloud.configuration.validation.annotations.FieldsEquality;
+import com.cloudlearning.cloud.models.security.Base.BasicEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
@@ -28,7 +29,7 @@ import java.util.Collection;
 @DynamicUpdate
 @FieldsDiversity(groups = {User.ValidationChangePassword.class}, firstFieldName = "password", secondFieldName = "newPassword", message = "api.error.validation.passwordsAreSame")
 @FieldsEquality(groups = {User.ValidationChangePassword.class}, firstFieldName = "newPassword", secondFieldName = "confirmNewPassword", message = "api.error.validation.passwordsMismatch")
-public class User implements UserDetails, Serializable {
+public class User extends BasicEntity implements UserDetails, Serializable {
 
     public interface ValidationCreate { }
     public interface ValidationUpdate { }
@@ -37,7 +38,7 @@ public class User implements UserDetails, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID")
-    private Long id;
+    protected Long id;
 
     @NotNull(groups = {ValidationCreate.class, ValidationUpdate.class}, message = "api.error.validation.email.isRequired")
     @Email(groups = {ValidationCreate.class, ValidationUpdate.class}, message = "api.error.validation.email.failedValidation")
@@ -72,6 +73,8 @@ public class User implements UserDetails, Serializable {
 
     @Column(name = "ENABLED")
     private boolean enabled;
+
+    private boolean isDeleted = false;
 
     @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinColumn(name = "AUTHORITY_ID")

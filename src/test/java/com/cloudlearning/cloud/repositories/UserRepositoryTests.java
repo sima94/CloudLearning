@@ -42,6 +42,22 @@ public class UserRepositoryTests extends CloudApplicationTests {
     }
 
     @Test
+    public void whenFindByUsername_andUserIsSoftDeleted_thenDoNotReturnUser() {
+        // given
+        User admin = new User();
+        admin.setId(1L);
+        admin.setUsername("admin@test.com");
+        Authority adminAuth = new Authority();
+        adminAuth.setId(1L);
+        admin.setDeleted(true);
+        admin.setAuthority(adminAuth);
+
+        userRepository.save(admin);
+
+        assert userRepository.findByUsername("admin@test.com").isPresent() == false;
+    }
+
+    @Test
     public void whenFindByUsernameOrId_thenReturnUsers() {
 
         User admin = new User();
