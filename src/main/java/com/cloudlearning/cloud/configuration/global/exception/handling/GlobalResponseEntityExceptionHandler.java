@@ -2,6 +2,9 @@ package com.cloudlearning.cloud.configuration.global.exception.handling;
 
 import com.cloudlearning.cloud.configuration.global.exception.handling.errors.ApiError;
 import com.cloudlearning.cloud.configuration.global.exception.handling.errors.ApiValidationError;
+import com.cloudlearning.cloud.exeptions.entity.EntityAlreadyExistExeption;
+import com.cloudlearning.cloud.exeptions.entity.EntityException;
+import com.cloudlearning.cloud.exeptions.entity.EntityNotExistException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +29,9 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
 
         status = HttpStatus.UNPROCESSABLE_ENTITY;
 
+        ApiError error = new ApiError(status);
+        error.setMessage("api.error.validation");
+
         //Get all validation errors
         List<ApiValidationError> validationErrors = new ArrayList<>();
         for (FieldError x : ex.getBindingResult()
@@ -33,22 +39,33 @@ public class GlobalResponseEntityExceptionHandler extends ResponseEntityExceptio
             ApiValidationError apiValidationError = new ApiValidationError(x.getObjectName(), x.getField(), x.getRejectedValue(), x.getDefaultMessage());
             validationErrors.add(apiValidationError);
         }
-
-        ApiError error = new ApiError(status);
-        error.setMessage("api.error.validation");
-
         error.setValidationErrors(validationErrors);
 
         return new ResponseEntity<>(error, headers, status);
-
     }
 
     @ExceptionHandler(ResponseStatusException.class)
-    protected ResponseEntity<Object> handleEntityNotFound(
+    protected ResponseEntity<Object> handleResponseStatusExceptions(
             ResponseStatusException ex) {
+
         ApiError apiError;
         apiError = new ApiError(ex.getStatus());
         apiError.setMessage(ex.getReason());
+        return new ResponseEntity<>(apiError, apiError.getHttpStatus());
+    }
+
+    @ExceptionHandler(EntityException.class)
+    protected ResponseEntity<Object> handleEntityExceptions(
+            EntityException ex) {
+
+        ApiError apiError = null;
+        if (ex instanceof EntityAlreadyExistExeption) {
+            apiError = new ApiError(HttpStatus.EXPECTATION_FAILED);
+        } else if (ex instanceof EntityNotExistException) {
+            apiError = new ApiError(HttpStatus.NOT_FOUND);
+        }
+
+        apiError.setMessage(ex.getMessage());
         return new ResponseEntity<>(apiError, apiError.getHttpStatus());
     }
 
