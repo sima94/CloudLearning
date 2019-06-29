@@ -1,6 +1,5 @@
 package com.cloudlearning.cloud.services.user;
 
-import com.cloudlearning.cloud.exeptions.entity.EntityException;
 import com.cloudlearning.cloud.models.security.User;
 import com.cloudlearning.cloud.exeptions.entity.EntityNotExistException;
 import org.springframework.data.domain.Page;
