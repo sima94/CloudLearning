@@ -4,7 +4,6 @@ import com.cloudlearning.cloud.exeptions.entity.EntityAlreadyExistExeption;
 import com.cloudlearning.cloud.models.security.User;
 import com.cloudlearning.cloud.exeptions.entity.EntityNotExistException;
 import com.cloudlearning.cloud.services.user.UserService;
-import com.cloudlearning.cloud.services.user.exceptions.AuthorityEntityNotExistException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,12 +30,7 @@ public class UserController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseBody
     public User getUser(@PathVariable Long id){
-        try {
-            return userService.find(id);
-        } catch (EntityNotExistException e){
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, e.getMessage(), e);
-        }
+        return userService.find(id);
     }
 
     @GetMapping(path = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -62,28 +56,15 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public User createUser(@Validated(User.ValidationCreate.class) @RequestBody User user){
-        try {
-            return userService.create(user);
-        } catch (AuthorityEntityNotExistException e){
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, e.getMessage(), e);
-        } catch (EntityAlreadyExistExeption e){
-            throw new ResponseStatusException(
-                    HttpStatus.EXPECTATION_FAILED, e.getMessage(), e);
-        }
+        return userService.create(user);
     }
 
     @PutMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("isAuthenticated()")
     @ResponseStatus(value = HttpStatus.OK)
     public User updateUser(@PathVariable Long id, @Validated(User.ValidationUpdate.class) @RequestBody User user){
-        try {
-            user.setId(id);
-            return userService.update(user);
-        } catch (EntityNotExistException e){
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, e.getMessage(), e);
-        }
+        user.setId(id);
+        return userService.update(user);
     }
 
     @PostMapping(path = "/change/password")
@@ -99,11 +80,6 @@ public class UserController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteUser(@PathVariable Long id){
-        try {
-            userService.delete(id);
-        } catch (EntityNotExistException e){
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND, e.getMessage(), e);
-        }
+        userService.delete(id);
     }
 }

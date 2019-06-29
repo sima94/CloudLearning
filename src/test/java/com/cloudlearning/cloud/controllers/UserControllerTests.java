@@ -5,7 +5,6 @@ import com.cloudlearning.cloud.exeptions.entity.EntityNotExistException;
 import com.cloudlearning.cloud.models.security.Authority;
 import com.cloudlearning.cloud.models.security.User;
 import com.cloudlearning.cloud.services.user.UserService;
-import com.cloudlearning.cloud.services.user.exceptions.AuthorityEntityNotExistException;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.tools.javac.util.List;
@@ -300,7 +299,7 @@ public class UserControllerTests {
 
         String authorityEntityNotExist = "authorityEntityNotExist";
 
-        Mockito.doThrow(new AuthorityEntityNotExistException(authorityEntityNotExist)).when(userService).create(user);
+        Mockito.doThrow(new EntityNotExistException(authorityEntityNotExist)).when(userService).create(user);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.disable(MapperFeature.USE_ANNOTATIONS);
