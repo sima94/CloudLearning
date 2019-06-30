@@ -8,13 +8,13 @@ import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
 @Entity
-@Table(name="AUTHORITY", uniqueConstraints = {@UniqueConstraint(columnNames = {"NAME"})})
+@Table(name="ROLE", uniqueConstraints = {@UniqueConstraint(columnNames = {"NAME"})})
 @Getter
 @Setter
 @EqualsAndHashCode(of = "id")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Authority extends BasicEntity implements GrantedAuthority {
+public class Role extends BasicEntity implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class Authority extends BasicEntity implements GrantedAuthority {
     private Long id;
 
     @Column(name = "NAME")
-    @Getter(AccessLevel.PRIVATE)
+    @Getter(AccessLevel.PUBLIC)
     private String name;
 
     @Override

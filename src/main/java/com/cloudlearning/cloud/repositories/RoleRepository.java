@@ -1,12 +1,11 @@
 package com.cloudlearning.cloud.repositories;
 
-import com.cloudlearning.cloud.models.security.Authority;
-import com.cloudlearning.cloud.models.security.User;
+import com.cloudlearning.cloud.models.security.Role;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AuthorityRepository extends CrudRepository<Authority, Long>, PagingAndSortingRepository<Authority, Long> {
+public interface RoleRepository extends CrudRepository<Role, Long>, PagingAndSortingRepository<Role, Long> {
 
 }
