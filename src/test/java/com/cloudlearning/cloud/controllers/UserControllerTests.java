@@ -2,7 +2,7 @@ package com.cloudlearning.cloud.controllers;
 
 import com.cloudlearning.cloud.exeptions.entity.EntityAlreadyExistExeption;
 import com.cloudlearning.cloud.exeptions.entity.EntityNotExistException;
-import com.cloudlearning.cloud.models.security.Authority;
+import com.cloudlearning.cloud.models.security.Role;
 import com.cloudlearning.cloud.models.security.User;
 import com.cloudlearning.cloud.services.user.UserService;
 import com.fasterxml.jackson.databind.MapperFeature;
@@ -43,7 +43,7 @@ public class UserControllerTests {
     private UserService userService;
 
     @Test
-    @WithMockUser(authorities = {"ADMIN"})
+    @WithMockUser(roles = {"ADMIN"})
     public void whenGetUser_thanGetUserJson() throws Exception {
 
         User user = new User();
@@ -60,7 +60,7 @@ public class UserControllerTests {
     }
 
     @Test
-    @WithMockUser(authorities = {"ADMIN"})
+    @WithMockUser(roles = {"ADMIN"})
     public void whenTryToGetUserWithWrongId_thanReturn404() throws Exception {
 
         User user = new User();
@@ -132,7 +132,7 @@ public class UserControllerTests {
     }
 
     @Test
-    @WithMockUser(authorities = "ADMIN")
+    @WithMockUser(roles = "ADMIN")
     public void whenGetUsers_thenReturnUsersJson() throws Exception {
 
         User testUser1 = new User();
@@ -186,7 +186,7 @@ public class UserControllerTests {
     }
 
     @Test
-    @WithMockUser(authorities = "ADMIN")
+    @WithMockUser(roles = "ADMIN")
     public void whenTryToCreateUser_thanReturnStatus200AndNewUser() throws Exception {
 
         User user = new User();
@@ -194,9 +194,9 @@ public class UserControllerTests {
         user.setUsername("user@test.com");
         user.setPassword("userPassword");
         user.setEnabled(true);
-        Authority adminAuthority = new Authority();
-        adminAuthority.setId(1L);
-        user.setAuthority(adminAuthority);
+        Role adminRole = new Role();
+        adminRole.setId(1L);
+        user.setRole(adminRole);
 
         Mockito.when(userService.create(user)).thenReturn(user);
 
@@ -209,11 +209,11 @@ public class UserControllerTests {
         result.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1L))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.username").value("user@test.com"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.authority.id").value(1L));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.role.id").value(1L));
     }
 
     @Test
-    @WithMockUser(authorities = "ADMIN")
+    @WithMockUser(roles = "ADMIN")
     public void whenTryToCreateUser_withWrongParams_thanReturnStatus422AndValidationErrors() throws Exception {
 
         User user = new User();
@@ -241,9 +241,9 @@ public class UserControllerTests {
         user.setUsername("user@test.com");
         user.setPassword("userPassword");
         user.setEnabled(true);
-        Authority adminAuthority = new Authority();
-        adminAuthority.setId(1L);
-        user.setAuthority(adminAuthority);
+        Role adminRole = new Role();
+        adminRole.setId(1L);
+        user.setRole(adminRole);
 
         Mockito.when(userService.create(user)).thenReturn(user);
 
@@ -257,7 +257,7 @@ public class UserControllerTests {
     }
 
     @Test
-    @WithMockUser(authorities = "ADMIN")
+    @WithMockUser(roles = "ADMIN")
     public void whenTryToCreateUser_withExistingUsername_thanReturnExpectationFail() throws Exception {
 
         User user = new User();
@@ -265,9 +265,9 @@ public class UserControllerTests {
         user.setUsername("user@test.com");
         user.setPassword("userPassword");
         user.setEnabled(true);
-        Authority adminAuthority = new Authority();
-        adminAuthority.setId(1L);
-        user.setAuthority(adminAuthority);
+        Role adminRole = new Role();
+        adminRole.setId(1L);
+        user.setRole(adminRole);
 
         String usernameAlreadyExist = "usernameExist";
 
@@ -285,7 +285,7 @@ public class UserControllerTests {
     }
 
     @Test
-    @WithMockUser(authorities = "ADMIN")
+    @WithMockUser(roles = "ADMIN")
     public void whenTryToCreateUser_withWrongAuthorityId_thanReturnNotFound() throws Exception {
 
         User user = new User();
@@ -293,9 +293,9 @@ public class UserControllerTests {
         user.setUsername("user@test.com");
         user.setPassword("userPassword");
         user.setEnabled(true);
-        Authority adminAuthority = new Authority();
-        adminAuthority.setId(1L);
-        user.setAuthority(adminAuthority);
+        Role adminRole = new Role();
+        adminRole.setId(1L);
+        user.setRole(adminRole);
 
         String authorityEntityNotExist = "authorityEntityNotExist";
 
@@ -313,7 +313,7 @@ public class UserControllerTests {
     }
 
     @Test
-    @WithMockUser(value = "user@test.com")
+    @WithMockUser(value = "user@test.com", roles = "ADMIN")
     public void whenTryToUpdateNewUser_thenReturnNewUser() throws Exception {
 
         User user = new User();
@@ -321,9 +321,9 @@ public class UserControllerTests {
         user.setUsername("user@test.com");
         user.setPassword("userPassword");
         user.setEnabled(true);
-        Authority adminAuthority = new Authority();
-        adminAuthority.setId(1L);
-        user.setAuthority(adminAuthority);
+        Role adminRole = new Role();
+        adminRole.setId(1L);
+        user.setRole(adminRole);
 
         Mockito.when(userService.update(user)).thenReturn(user);
 
@@ -336,7 +336,7 @@ public class UserControllerTests {
         result.andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1L))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.username").value("user@test.com"))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.authority.id").value(1L));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.role.id").value(1L));
     }
 
     @Test
@@ -347,9 +347,9 @@ public class UserControllerTests {
         user.setUsername("user@test.com");
         user.setPassword("userPassword");
         user.setEnabled(true);
-        Authority adminAuthority = new Authority();
-        adminAuthority.setId(1L);
-        user.setAuthority(adminAuthority);
+        Role adminRole = new Role();
+        adminRole.setId(1L);
+        user.setRole(adminRole);
 
         Mockito.when(userService.update(user)).thenReturn(user);
 
@@ -363,7 +363,7 @@ public class UserControllerTests {
     }
 
     @Test
-    @WithMockUser(value = "user@test.com")
+    @WithMockUser(value = "user@test.com", roles = "ADMIN")
     public void whenTryToUpdateNewUser_andUserNotExist_thenReturnNotFound() throws Exception {
 
         User user = new User();
@@ -371,9 +371,9 @@ public class UserControllerTests {
         user.setUsername("user@test.com");
         user.setPassword("userPassword");
         user.setEnabled(true);
-        Authority adminAuthority = new Authority();
-        adminAuthority.setId(1L);
-        user.setAuthority(adminAuthority);
+        Role adminRole = new Role();
+        adminRole.setId(1L);
+        user.setRole(adminRole);
 
         String errorMessage = "notFound";
 
@@ -465,7 +465,7 @@ public class UserControllerTests {
     }
 
     @Test
-    @WithMockUser(authorities = "ADMIN")
+    @WithMockUser(roles = "ADMIN")
     public void whenTryToDeleteUser_thenReturnNoContent() throws Exception {
 
         ResultActions result = mvc.perform(MockMvcRequestBuilders
@@ -475,7 +475,7 @@ public class UserControllerTests {
     }
 
     @Test
-    @WithMockUser(authorities = "ADMIN")
+    @WithMockUser(roles = "ADMIN")
     public void whenTryToDeleteUser_andUserNotExist_thenReturnNotFound() throws Exception {
 
         Long userId = 1L;

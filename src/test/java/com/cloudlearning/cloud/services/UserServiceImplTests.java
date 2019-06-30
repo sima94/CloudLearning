@@ -3,9 +3,9 @@ package com.cloudlearning.cloud.services;
 import com.cloudlearning.cloud.configuration.encryption.Encoders;
 import com.cloudlearning.cloud.exeptions.entity.EntityAlreadyExistExeption;
 import com.cloudlearning.cloud.exeptions.entity.EntityNotExistException;
-import com.cloudlearning.cloud.models.security.Authority;
+import com.cloudlearning.cloud.models.security.Role;
 import com.cloudlearning.cloud.models.security.User;
-import com.cloudlearning.cloud.repositories.AuthorityRepository;
+import com.cloudlearning.cloud.repositories.RoleRepository;
 import com.cloudlearning.cloud.repositories.UserRepository;
 import com.cloudlearning.cloud.services.user.UserService;
 import com.cloudlearning.cloud.services.user.UserServiceImpl;
@@ -43,7 +43,7 @@ public class UserServiceImplTests {
     private UserService userService;
 
     @MockBean
-    private AuthorityRepository authorityRepositoryMock;
+    private RoleRepository authorityRepositoryMock;
 
     @MockBean
     private Encoders encodersMock;
@@ -73,7 +73,7 @@ public class UserServiceImplTests {
         testUser.setId(1L);
         testUser.setUsername("user@test.com");
 
-        Mockito.when(userRepositoryMock.findByUsername(testUser.getUsername())).thenReturn(Optional.ofNullable(null));
+        Mockito.when(userRepositoryMock.findByUsername(testUser.getUsername())).thenReturn(Optional.empty());
 
         UsernameNotFoundException usernameNotFoundException = null;
         try {
@@ -109,15 +109,15 @@ public class UserServiceImplTests {
         testUser.setUsername("user@test.com");
         testUser.setPassword("testPassword");
 
-        Authority testAuthority = new Authority();
-        testAuthority.setId(1L);
+        Role testRole = new Role();
+        testRole.setId(1L);
 
-        testUser.setAuthority(testAuthority);
+        testUser.setRole(testRole);
 
         PasswordEncoder userPasswordEncoder = new Encoders().userPasswordEncoder();
 
         Mockito.when(userRepositoryMock.findByUsernameOrId(testUser.getUsername(),testUser.getId())).thenReturn(Collections.emptyList());
-        Mockito.when(authorityRepositoryMock.findById(testAuthority.getId())).thenReturn(Optional.of(testAuthority));
+        Mockito.when(authorityRepositoryMock.findById(testRole.getId())).thenReturn(Optional.of(testRole));
         Mockito.when(encodersMock.userPasswordEncoder()).thenReturn(userPasswordEncoder);
 
         Mockito.when(userRepositoryMock.save(testUser)).thenReturn(testUser);
@@ -160,15 +160,15 @@ public class UserServiceImplTests {
         testUser.setUsername("user@test.com");
         testUser.setPassword("testPassword");
 
-        Authority testAuthority = new Authority();
-        testAuthority.setId(999L);
+        Role testRole = new Role();
+        testRole.setId(999L);
 
-        testUser.setAuthority(testAuthority);
+        testUser.setRole(testRole);
 
         PasswordEncoder userPasswordEncoder = new Encoders().userPasswordEncoder();
 
         Mockito.when(userRepositoryMock.findByUsernameOrId(testUser.getUsername(),testUser.getId())).thenReturn(Collections.emptyList());
-        Mockito.when(authorityRepositoryMock.findById(testAuthority.getId())).thenReturn(Optional.ofNullable(null));
+        Mockito.when(authorityRepositoryMock.findById(testRole.getId())).thenReturn(Optional.empty());
         Mockito.when(encodersMock.userPasswordEncoder()).thenReturn(userPasswordEncoder);
 
         Mockito.when(userRepositoryMock.save(testUser)).thenReturn(testUser);
@@ -181,7 +181,7 @@ public class UserServiceImplTests {
         }
 
         assert testException != null;
-        assert testException.getMessage().equals("api.error.authority.notExist");
+        assert testException.getMessage().equals("api.error.role.notExist");
         Mockito.verify(userRepositoryMock, Mockito.times(0)).save(testUser);
     }
 
@@ -196,9 +196,9 @@ public class UserServiceImplTests {
         testUser.setAccountLocked(false);
         testUser.setCredentialsExpired(false);
         testUser.setEnabled(true);
-        Authority newAuthority = new Authority();
-        newAuthority.setId(99L);
-        testUser.setAuthority(newAuthority);
+        Role newRole = new Role();
+        newRole.setId(99L);
+        testUser.setRole(newRole);
 
         User oldUser = new User();
         oldUser.setId(1L);
@@ -209,9 +209,9 @@ public class UserServiceImplTests {
         oldUser.setCredentialsExpired(true);
         oldUser.setEnabled(false);
 
-        Authority oldAuthority = new Authority();
-        oldAuthority.setId(1L);
-        oldUser.setAuthority(oldAuthority);
+        Role oldRole = new Role();
+        oldRole.setId(1L);
+        oldUser.setRole(oldRole);
 
         Mockito.when(userRepositoryMock.findById(testUser.getId())).thenReturn(Optional.of(oldUser));
 
@@ -226,7 +226,7 @@ public class UserServiceImplTests {
         assert updatedUser.isAccountLocked() == testUser.isAccountLocked();
         assert updatedUser.isCredentialsExpired() == testUser.isCredentialsExpired();
         assert updatedUser.isEnabled() == testUser.isEnabled();
-        assert updatedUser.getAuthority() != testUser.getAuthority();
+        assert updatedUser.getRole() != testUser.getRole();
         Mockito.verify(userRepositoryMock, Mockito.times(1)).save(testUser);
     }
 
@@ -237,7 +237,7 @@ public class UserServiceImplTests {
         testUser.setId(1L);
         testUser.setUsername("user@test.com");
 
-        Mockito.when(userRepositoryMock.findById(testUser.getId())).thenReturn(Optional.ofNullable(null));
+        Mockito.when(userRepositoryMock.findById(testUser.getId())).thenReturn(Optional.empty());
 
         EntityNotExistException entityNotExistException = null;
         try {
@@ -339,7 +339,7 @@ public class UserServiceImplTests {
         User testUser = new User();
         testUser.setId(1L);
 
-        Mockito.when(userRepositoryMock.findById(testUser.getId())).thenReturn(Optional.ofNullable(null));
+        Mockito.when(userRepositoryMock.findById(testUser.getId())).thenReturn(Optional.empty());
 
         EntityNotExistException entityNotExistException = null;
         try {

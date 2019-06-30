@@ -5,6 +5,7 @@ import com.cloudlearning.cloud.configuration.validation.annotations.FieldsEquali
 import com.cloudlearning.cloud.models.security.Base.BasicEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sun.tools.javac.util.List;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +13,6 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.management.relation.Role;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -74,19 +74,15 @@ public class User extends BasicEntity implements UserDetails, Serializable {
     @Column(name = "ENABLED")
     private boolean enabled;
 
-    private boolean isDeleted = false;
-
     @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
-    @JoinColumn(name = "AUTHORITY_ID")
-    @NotNull(groups = {ValidationCreate.class}, message = "api.error.validation.authority.isRequired")
-    private Authority authority;
+    @JoinColumn(name = "ROLE_ID")
+    @NotNull(groups = {ValidationCreate.class}, message = "api.error.validation.role.isRequired")
+    private Role role;
 
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        ArrayList authorities = new ArrayList<Authority>();
-        authorities.add(this.getAuthority());
-        return authorities;
+        return List.of(getRole());
     }
 
     @Override

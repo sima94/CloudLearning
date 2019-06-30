@@ -3,9 +3,9 @@ package com.cloudlearning.cloud.services.user;
 import com.cloudlearning.cloud.configuration.encryption.Encoders;
 import com.cloudlearning.cloud.exeptions.entity.EntityAlreadyExistExeption;
 import com.cloudlearning.cloud.exeptions.entity.EntityNotExistException;
-import com.cloudlearning.cloud.models.security.Authority;
+import com.cloudlearning.cloud.models.security.Role;
 import com.cloudlearning.cloud.models.security.User;
-import com.cloudlearning.cloud.repositories.AuthorityRepository;
+import com.cloudlearning.cloud.repositories.RoleRepository;
 import com.cloudlearning.cloud.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private AuthorityRepository authorityRepository;
+    private RoleRepository roleRepository;
 
     @Autowired
     private Encoders passwordEncoder;
@@ -47,8 +47,8 @@ public class UserServiceImpl implements UserService {
             throw new EntityAlreadyExistExeption("api.error.user.usernameAlreadyExist");
         }
 
-        Authority authority = authorityRepository.findById(user.getAuthority().getId()).orElseThrow(()-> new EntityNotExistException("api.error.authority.notExist"));
-        user.setAuthority(authority);
+        Role role = roleRepository.findById(user.getRole().getId()).orElseThrow(()-> new EntityNotExistException("api.error.role.notExist"));
+        user.setRole(role);
 
         String password = user.getPassword();
         //Encrypt user password using BCryptPasswordEncoder(8)

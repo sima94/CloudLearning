@@ -1,7 +1,7 @@
 package com.cloudlearning.cloud.repositories;
 
 import com.cloudlearning.cloud.CloudApplicationTests;
-import com.cloudlearning.cloud.models.security.Authority;
+import com.cloudlearning.cloud.models.security.Role;
 import com.cloudlearning.cloud.models.security.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,9 +28,9 @@ public class UserRepositoryTests extends CloudApplicationTests {
         User admin = new User();
         admin.setId(1L);
         admin.setUsername("admin@test.com");
-        Authority adminAuth = new Authority();
-        adminAuth.setId(1L);
-        admin.setAuthority(adminAuth);
+        Role adminRole = new Role();
+        adminRole.setId(1L);
+        admin.setRole(adminRole);
 
         userRepository.save(admin);
 
@@ -47,10 +47,10 @@ public class UserRepositoryTests extends CloudApplicationTests {
         User admin = new User();
         admin.setId(1L);
         admin.setUsername("admin@test.com");
-        Authority adminAuth = new Authority();
-        adminAuth.setId(1L);
+        Role adminRole = new Role();
+        adminRole.setId(1L);
         admin.setDeleted(true);
-        admin.setAuthority(adminAuth);
+        admin.setRole(adminRole);
 
         userRepository.save(admin);
 
@@ -63,16 +63,16 @@ public class UserRepositoryTests extends CloudApplicationTests {
         User admin = new User();
         admin.setId(1L);
         admin.setUsername("admin@test.com");
-        Authority adminAuth = new Authority();
-        adminAuth.setId(1L);
-        admin.setAuthority(adminAuth);
+        Role adminRole = new Role();
+        adminRole.setId(1L);
+        admin.setRole(adminRole);
 
         User professor = new User();
         professor.setId(2L);
         professor.setUsername("profesor@test.com");
-        Authority professorAuth = new Authority();
-        professorAuth.setId(2L);
-        professor.setAuthority(professorAuth);
+        Role professorRole = new Role();
+        professorRole.setId(2L);
+        professor.setRole(professorRole);
 
         userRepository.save(admin);
         userRepository.save(professor);
