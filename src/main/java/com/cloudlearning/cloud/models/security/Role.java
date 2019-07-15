@@ -2,7 +2,7 @@ package com.cloudlearning.cloud.models.security;
 
 import javax.persistence.*;
 
-import com.cloudlearning.cloud.models.security.Base.BasicEntity;
+import com.cloudlearning.cloud.models.base.BasicEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;

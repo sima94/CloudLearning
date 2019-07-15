@@ -1,8 +1,8 @@
 package com.cloudlearning.cloud.repositories;
 
 import com.cloudlearning.cloud.models.security.User;
-import com.cloudlearning.cloud.repositories.Base.SoftDelete.SoftDeleteCrudRepository;
-import com.cloudlearning.cloud.repositories.Base.SoftDelete.SoftDeletePagingAndSortingRepository;
+import com.cloudlearning.cloud.repositories.base.softDelete.SoftDeleteCrudRepository;
+import com.cloudlearning.cloud.repositories.base.softDelete.SoftDeletePagingAndSortingRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;

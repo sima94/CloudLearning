@@ -1,17 +1,17 @@
 package com.cloudlearning.cloud.services;
 
+import com.cloudlearning.cloud.configuration.base.AbstractTests;
 import com.cloudlearning.cloud.configuration.encryption.Encoders;
-import com.cloudlearning.cloud.exeptions.entity.EntityAlreadyExistExeption;
-import com.cloudlearning.cloud.exeptions.entity.EntityNotExistException;
+import com.cloudlearning.cloud.global.exception.entity.EntityAlreadyExistExeption;
+import com.cloudlearning.cloud.global.exception.entity.EntityNotExistException;
 import com.cloudlearning.cloud.models.security.Role;
 import com.cloudlearning.cloud.models.security.User;
-import com.cloudlearning.cloud.repositories.RoleRepository;
 import com.cloudlearning.cloud.repositories.UserRepository;
 import com.cloudlearning.cloud.services.user.UserService;
 import com.cloudlearning.cloud.services.user.UserServiceImpl;
+import com.cloudlearning.cloud.repositories.RoleRepository;
 import com.sun.tools.javac.util.List;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -23,12 +23,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Collections;
 import java.util.Optional;
 
-@RunWith(SpringRunner.class)
-public class UserServiceImplTests {
+public class UserServiceImplTests extends AbstractTests {
 
     @TestConfiguration
     static class UserServiceImplTestContextConfiguration {

@@ -1,8 +1,8 @@
 package com.cloudlearning.cloud.models.security;
 
+import com.cloudlearning.cloud.models.base.BasicEntity;
 import com.cloudlearning.cloud.configuration.validation.annotations.FieldsDiversity;
 import com.cloudlearning.cloud.configuration.validation.annotations.FieldsEquality;
-import com.cloudlearning.cloud.models.security.Base.BasicEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.tools.javac.util.List;
@@ -18,7 +18,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
