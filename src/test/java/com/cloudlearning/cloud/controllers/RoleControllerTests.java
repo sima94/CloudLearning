@@ -1,14 +1,13 @@
 package com.cloudlearning.cloud.controllers;
 
+import com.cloudlearning.cloud.controllers.base.AbstractControllerTests;
 import com.cloudlearning.cloud.models.security.Role;
 import com.cloudlearning.cloud.services.role.RoleService;
 import com.sun.tools.javac.util.List;
 import org.hamcrest.collection.IsCollectionWithSize;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
@@ -17,17 +16,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@RunWith(SpringRunner.class)
 @WebMvcTest(controllers= RoleController.class, includeFilters = @ComponentScan.Filter(classes= EnableWebSecurity.class))
-@AutoConfigureMockMvc
-public class RoleControllerTests {
+public class RoleControllerTests extends AbstractControllerTests{
 
     @Autowired
     private MockMvc mvc;
@@ -39,7 +35,7 @@ public class RoleControllerTests {
     @WithMockUser(roles = {"ADMIN"})
     public void whenTryToGetAuthorities_thenFeatureAuthoritiesJson() throws Exception {
 
-        com.cloudlearning.cloud.models.security.Role role1 = new Role();
+        Role role1 = new Role();
         role1.setId(1L);
         role1.setName("ADMIN");
 

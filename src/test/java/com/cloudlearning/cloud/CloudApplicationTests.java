@@ -1,11 +1,10 @@
 package com.cloudlearning.cloud;
 
+import com.cloudlearning.cloud.configuration.base.AbstractTests;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringRunner;
 
-@RunWith(SpringRunner.class)
-public class CloudApplicationTests {
+
+public class CloudApplicationTests extends AbstractTests {
 
     @Test
     public void contextTest(){

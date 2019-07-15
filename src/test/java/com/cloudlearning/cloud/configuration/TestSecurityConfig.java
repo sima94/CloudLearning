@@ -1,6 +1,8 @@
 package com.cloudlearning.cloud.configuration;
 
 import java.util.Arrays;
+
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -41,10 +43,11 @@ public class TestSecurityConfig extends WebSecurityConfigurerAdapter {
         }
     }
 
-    @Bean
-    public UserDetailsService userDetailsService(){
-        GrantedAuthority authority = new SimpleGrantedAuthority("ADMIN");
-        UserDetails userDetails = new User("admin", "admin", Arrays.asList(authority));
-        return new InMemoryUserDetailsManager(Arrays.asList(userDetails));
-    }
+//    @Bean
+//    @Qualifier("testUserDetailsService")
+//    public UserDetailsService userDetailsService(){
+//        GrantedAuthority authority = new SimpleGrantedAuthority("ADMIN");
+//        UserDetails userDetails = new User("admin", "admin", Arrays.asList(authority));
+//        return new InMemoryUserDetailsManager(Arrays.asList(userDetails));
+//    }
 }

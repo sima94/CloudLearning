@@ -1,7 +1,8 @@
 package com.cloudlearning.cloud.controllers;
 
-import com.cloudlearning.cloud.exeptions.entity.EntityAlreadyExistExeption;
-import com.cloudlearning.cloud.exeptions.entity.EntityNotExistException;
+import com.cloudlearning.cloud.controllers.base.AbstractControllerTests;
+import com.cloudlearning.cloud.global.exception.entity.EntityAlreadyExistExeption;
+import com.cloudlearning.cloud.global.exception.entity.EntityNotExistException;
 import com.cloudlearning.cloud.models.security.Role;
 import com.cloudlearning.cloud.models.security.User;
 import com.cloudlearning.cloud.services.user.UserService;
@@ -10,10 +11,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.tools.javac.util.List;
 import org.hamcrest.collection.IsCollectionWithSize;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
@@ -23,18 +22,14 @@ import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-
-@RunWith(SpringRunner.class)
 @WebMvcTest(controllers=UserController.class, includeFilters = @ComponentScan.Filter(classes= EnableWebSecurity.class))
-@AutoConfigureMockMvc
-public class UserControllerTests {
+public class UserControllerTests extends AbstractControllerTests {
 
     @Autowired
     private MockMvc mvc;
@@ -504,24 +499,3 @@ public class UserControllerTests {
 
 }
 
-//    private String obtainAccessToken(String username, String password) throws Exception {
-//
-//        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-//        params.add("grant_type", "password");
-//        params.add("client_id", "spring-security-oauth2-read-write-client");
-//        params.add("username", username);
-//        params.add("password", password);
-//
-//        ResultActions result
-//                = mvc.perform(MockMvcRequestBuilders.post("/oauth/token")
-//                .params(params)
-//                .with(SecurityMockMvcRequestPostProcessors.httpBasic("spring-security-oauth2-read-write-client","spring-security-oauth2-read-write-client-password1234"))
-//                .accept("application/json;charset=UTF-8"))
-//                .andExpect(MockMvcResultMatchers.status().isOk())
-//                .andExpect(MockMvcResultMatchers.content().contentType("application/json;charset=UTF-8"));
-//
-//        String resultString = result.andReturn().getResponse().getContentAsString();
-//
-//        JacksonJsonParser jsonParser = new JacksonJsonParser();
-//        return jsonParser.parseMap(resultString).get("access_token").toString();
-//    }
