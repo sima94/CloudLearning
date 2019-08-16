@@ -1,5 +1,6 @@
 package com.cloudlearning.cloud.controllers;
 
+import com.cloudlearning.cloud.configuration.encryption.Encoders;
 import com.cloudlearning.cloud.models.security.User;
 import com.cloudlearning.cloud.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.beans.Encoder;
 import java.security.Principal;
 
 @RestController
@@ -64,9 +66,9 @@ public class UserController {
         return userService.update(user);
     }
 
-    @PostMapping(path = "/change/password")
+    @PostMapping(path = "/change/password", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("isAuthenticated()")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.CREATED)
     public void changePassword(@Validated(User.ValidationChangePassword.class) @RequestBody User user, Principal principal) throws Exception {
         String username = principal.getName();
         user.setUsername(username);
@@ -78,5 +80,14 @@ public class UserController {
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteUser(@PathVariable Long id){
         userService.delete(id);
+    }
+
+    @PostMapping(path = "/generate/password/{password}")
+    @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
+    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseBody
+    public String generatePasswordHash(@PathVariable String password) throws Exception {
+        Encoders encoders = new Encoders();
+        return encoders.userPasswordEncoder().encode(password);
     }
 }

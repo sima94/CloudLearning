@@ -10,16 +10,16 @@ public class OauthControllerIntegrationTests extends AbstractControllerIntegrati
     @Test
     public void whenTryToLogin_WithCorrectCredential_ThenReturnNewOauthTokens() throws Exception {
 
-        Oauth2Request request = new Oauth2Request("password", "admin", "admin1234");
+        Oauth2Request request = new Oauth2Request("password", "admin@integration.test", "admin@integration");
         Oauth2Response response = oauth2service.getToken(request);
 
         assert response.getAccessToken().length() > 0;
     }
 
     @Test
-    public void whenTryToRefers_WithValidRefreshToken_ThenReturnNewRefreshedOauthTokens() throws Exception {
+    public void whenTryToRefresh_WithValidRefreshToken_ThenReturnNewRefreshedOauthTokens() throws Exception {
 
-        Oauth2Request loginRequest = new Oauth2Request("password", "admin", "admin1234");
+        Oauth2Request loginRequest = new Oauth2Request("password", "admin@integration.test", "admin@integration");
         Oauth2Response loginResponse = oauth2service.getToken(loginRequest);
 
         Oauth2Request refreshRequest = new Oauth2Request("refresh_token", loginResponse.getRefreshToken());
