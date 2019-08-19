@@ -44,6 +44,7 @@ public class TestSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 //    @Bean
+//    @ConditionalOnMissingBean
 //    @Qualifier("testUserDetailsService")
 //    public UserDetailsService userDetailsService(){
 //        GrantedAuthority authority = new SimpleGrantedAuthority("ADMIN");

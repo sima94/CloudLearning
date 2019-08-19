@@ -3,9 +3,12 @@ package com.cloudlearning.cloud.models.security;
 import com.cloudlearning.cloud.models.base.BasicEntity;
 import com.cloudlearning.cloud.configuration.validation.annotations.FieldsDiversity;
 import com.cloudlearning.cloud.configuration.validation.annotations.FieldsEquality;
+import com.cloudlearning.cloud.models.members.Member;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.tools.javac.util.List;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -77,6 +80,10 @@ public class User extends BasicEntity implements UserDetails, Serializable {
     @JoinColumn(name = "ROLE_ID")
     @NotNull(groups = {ValidationCreate.class}, message = "api.error.validation.role.isRequired")
     private Role role;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonBackReference
+    private Member member;
 
     @Override
     @JsonIgnore
