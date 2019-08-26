@@ -1,4 +1,4 @@
-package com.cloudlearning.cloud.services.user;
+package com.cloudlearning.cloud.services.security.user;
 
 import com.cloudlearning.cloud.global.exception.entity.EntityNotExistException;
 import com.cloudlearning.cloud.models.security.User;
@@ -18,5 +18,5 @@ public interface UserService extends UserDetailsService {
 
     void changePassword(User user) throws Exception;
 
-    void delete(Long id) throws EntityNotExistException;
+    void delete(Long id);
 }

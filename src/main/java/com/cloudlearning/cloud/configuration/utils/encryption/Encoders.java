@@ -1,4 +1,4 @@
-package com.cloudlearning.cloud.configuration.encryption;
+package com.cloudlearning.cloud.configuration.utils.encryption;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

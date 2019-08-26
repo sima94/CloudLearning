@@ -1,4 +1,4 @@
-package com.cloudlearning.cloud.repositories;
+package com.cloudlearning.cloud.repositories.security;
 
 import com.cloudlearning.cloud.models.security.Role;
 import org.springframework.data.repository.CrudRepository;

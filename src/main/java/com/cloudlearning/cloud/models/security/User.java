@@ -22,6 +22,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Optional;
 
 @Entity
 @Table(name = "USER_", uniqueConstraints = { @UniqueConstraint(columnNames = { "USER_NAME" }) })
@@ -81,7 +82,7 @@ public class User extends BasicEntity implements UserDetails, Serializable {
     @NotNull(groups = {ValidationCreate.class}, message = "api.error.validation.role.isRequired")
     private Role role;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonBackReference
     private Member member;
 
@@ -99,6 +100,10 @@ public class User extends BasicEntity implements UserDetails, Serializable {
     @Override
     public String getUsername() {
         return this.username;
+    }
+
+    public Optional<Member> getMember(){
+        return Optional.ofNullable(member);
     }
 
     @Override

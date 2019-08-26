@@ -1,4 +1,4 @@
-package com.cloudlearning.cloud.controllers;
+package com.cloudlearning.cloud.controllers.security;
 
 import com.cloudlearning.cloud.configuration.oauth2.Oauth2Request;
 import com.cloudlearning.cloud.configuration.oauth2.Oauth2Response;

@@ -1,4 +1,4 @@
-package com.cloudlearning.cloud.controllers;
+package com.cloudlearning.cloud.controllers.security;
 
 import com.cloudlearning.cloud.configuration.oauth2.Oauth2Request;
 import com.cloudlearning.cloud.configuration.oauth2.Oauth2Response;
@@ -26,14 +26,14 @@ public class UserControllerIntegrationTest extends AbstractControllerIntegration
         Oauth2Response response = oauth2service.getToken(request);
 
         String token = response.accessToken();
-        Long userId = 2L;
+        Long userId = 3L;
 
         ResultActions result = mvc.perform(MockMvcRequestBuilders
                 .get("/api/v1/user/{id}",userId)
                 .header("Authorization", token));
 
         result.andDo(MockMvcResultHandlers.print()).andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(2))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(3))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.username").value("admin@integration.test"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.enabled").value(true))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.role.name").value("ROLE_ADMIN"));
@@ -72,7 +72,7 @@ public class UserControllerIntegrationTest extends AbstractControllerIntegration
                 .header("Authorization", token));
 
         result.andDo(MockMvcResultHandlers.print()).andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content", IsCollectionWithSize.hasSize(4)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content", IsCollectionWithSize.hasSize(5)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].username").value("admin"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].enabled").value(true))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].role.name").value("ROLE_ADMIN"));
@@ -116,15 +116,15 @@ public class UserControllerIntegrationTest extends AbstractControllerIntegration
         Oauth2Response response = oauth2service.getToken(request);
 
         String token = response.accessToken();
-        Long userId = 4L;
+        Long userId = 5L;
 
         User user = new User();
         user.setUsername("studentUpdate@integration.test");
         user.setPassword("studentUpdate@integration");
         user.setEnabled(true);
-        Role adminRole = new Role();
-        adminRole.setId(1L);
-        user.setRole(adminRole);
+        Role studentRole = new Role();
+        studentRole.setId(2L);
+        user.setRole(studentRole);
 
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.disable(MapperFeature.USE_ANNOTATIONS);

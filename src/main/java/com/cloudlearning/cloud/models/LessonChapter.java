@@ -3,10 +3,13 @@ package com.cloudlearning.cloud.models;
 import com.cloudlearning.cloud.models.base.BasicEntity;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.Collection;
 
+@Entity
+@Table(name = "LESSON_CHAPTER")
 @Getter
 @Setter
 public class LessonChapter extends BasicEntity {
@@ -22,7 +25,13 @@ public class LessonChapter extends BasicEntity {
     @Column(name = "TEXT")
     private String text;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "lessonChapter", fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @JoinColumn(name = "LESSON_ID")
+    @Where(clause = "IS_DELETED = false")
+    private Lesson lesson;
+
+    @OneToMany(mappedBy = "lessonChapter", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Where(clause = "IS_DELETED = false")
     private Collection<LessonComment> lessonComments;
 
 }

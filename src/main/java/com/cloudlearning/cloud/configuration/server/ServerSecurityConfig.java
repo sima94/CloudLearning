@@ -1,6 +1,6 @@
 package com.cloudlearning.cloud.configuration.server;
 
-import com.cloudlearning.cloud.configuration.encryption.Encoders;
+import com.cloudlearning.cloud.configuration.utils.encryption.Encoders;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;

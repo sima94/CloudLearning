@@ -1,8 +1,8 @@
-package com.cloudlearning.cloud.controllers;
+package com.cloudlearning.cloud.controllers.security;
 
 import com.cloudlearning.cloud.controllers.base.AbstractControllerTests;
 import com.cloudlearning.cloud.models.security.Role;
-import com.cloudlearning.cloud.services.role.RoleService;
+import com.cloudlearning.cloud.services.security.role.RoleService;
 import com.sun.tools.javac.util.List;
 import org.hamcrest.collection.IsCollectionWithSize;
 import org.junit.Test;

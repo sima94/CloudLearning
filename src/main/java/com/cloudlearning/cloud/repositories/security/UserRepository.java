@@ -1,4 +1,4 @@
-package com.cloudlearning.cloud.repositories;
+package com.cloudlearning.cloud.repositories.security;
 
 import com.cloudlearning.cloud.models.security.User;
 import com.cloudlearning.cloud.repositories.base.softDelete.SoftDeleteCrudRepository;

@@ -1,6 +1,6 @@
-package com.cloudlearning.cloud.controllers;
+package com.cloudlearning.cloud.controllers.security;
 
-import com.cloudlearning.cloud.services.role.RoleService;
+import com.cloudlearning.cloud.services.security.role.RoleService;
 import com.cloudlearning.cloud.models.security.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

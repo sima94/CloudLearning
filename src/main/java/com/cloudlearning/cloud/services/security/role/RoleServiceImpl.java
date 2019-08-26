@@ -1,7 +1,7 @@
-package com.cloudlearning.cloud.services.role;
+package com.cloudlearning.cloud.services.security.role;
 
 import com.cloudlearning.cloud.models.security.Role;
-import com.cloudlearning.cloud.repositories.RoleRepository;
+import com.cloudlearning.cloud.repositories.security.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

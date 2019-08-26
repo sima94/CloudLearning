@@ -1,11 +1,11 @@
-package com.cloudlearning.cloud.controllers;
+package com.cloudlearning.cloud.controllers.security;
 
 import com.cloudlearning.cloud.controllers.base.AbstractControllerTests;
 import com.cloudlearning.cloud.global.exception.entity.EntityAlreadyExistExeption;
 import com.cloudlearning.cloud.global.exception.entity.EntityNotExistException;
 import com.cloudlearning.cloud.models.security.Role;
 import com.cloudlearning.cloud.models.security.User;
-import com.cloudlearning.cloud.services.user.UserService;
+import com.cloudlearning.cloud.services.security.user.UserService;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.tools.javac.util.List;
@@ -28,7 +28,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-@WebMvcTest(controllers=UserController.class, includeFilters = @ComponentScan.Filter(classes= EnableWebSecurity.class))
+@WebMvcTest(controllers= UserController.class, includeFilters = @ComponentScan.Filter(classes= EnableWebSecurity.class))
 public class UserControllerTests extends AbstractControllerTests {
 
     @Autowired

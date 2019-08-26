@@ -1,10 +1,11 @@
 package com.cloudlearning.cloud.repositories.members;
 
-import org.springframework.data.repository.CrudRepository;
+import com.cloudlearning.cloud.models.members.Member;
+import com.cloudlearning.cloud.repositories.base.softDelete.SoftDeleteCrudRepository;
+import com.cloudlearning.cloud.repositories.base.softDelete.SoftDeletePagingAndSortingRepository;
 import org.springframework.data.repository.NoRepositoryBean;
-import org.springframework.data.repository.PagingAndSortingRepository;
 
 @NoRepositoryBean
-public interface MemberBaseRepository<Member, ID> extends CrudRepository<Member, ID>, PagingAndSortingRepository<Member, ID> {
+public interface MemberBaseRepository<M extends Member, ID extends Long> extends SoftDeleteCrudRepository<M, ID>, SoftDeletePagingAndSortingRepository<M, ID> {
 
 }

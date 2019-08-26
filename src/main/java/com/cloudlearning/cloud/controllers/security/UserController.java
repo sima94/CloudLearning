@@ -1,8 +1,8 @@
-package com.cloudlearning.cloud.controllers;
+package com.cloudlearning.cloud.controllers.security;
 
-import com.cloudlearning.cloud.configuration.encryption.Encoders;
+import com.cloudlearning.cloud.configuration.utils.encryption.Encoders;
 import com.cloudlearning.cloud.models.security.User;
-import com.cloudlearning.cloud.services.user.UserService;
+import com.cloudlearning.cloud.services.security.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.beans.Encoder;
 import java.security.Principal;
 
 @RestController
@@ -68,7 +67,7 @@ public class UserController {
 
     @PostMapping(path = "/change/password", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("isAuthenticated()")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void changePassword(@Validated(User.ValidationChangePassword.class) @RequestBody User user, Principal principal) throws Exception {
         String username = principal.getName();
         user.setUsername(username);

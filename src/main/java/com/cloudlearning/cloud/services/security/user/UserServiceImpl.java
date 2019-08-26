@@ -1,12 +1,12 @@
-package com.cloudlearning.cloud.services.user;
+package com.cloudlearning.cloud.services.security.user;
 
 import com.cloudlearning.cloud.global.exception.entity.EntityAlreadyExistExeption;
 import com.cloudlearning.cloud.global.exception.entity.EntityNotExistException;
 import com.cloudlearning.cloud.models.security.Role;
 import com.cloudlearning.cloud.models.security.User;
-import com.cloudlearning.cloud.repositories.UserRepository;
-import com.cloudlearning.cloud.configuration.encryption.Encoders;
-import com.cloudlearning.cloud.repositories.RoleRepository;
+import com.cloudlearning.cloud.repositories.security.UserRepository;
+import com.cloudlearning.cloud.configuration.utils.encryption.Encoders;
+import com.cloudlearning.cloud.repositories.security.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.dao.EmptyResultDataAccessException;

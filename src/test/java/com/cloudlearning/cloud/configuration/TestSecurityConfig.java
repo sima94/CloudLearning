@@ -3,6 +3,7 @@ package com.cloudlearning.cloud.configuration;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -44,7 +45,6 @@ public class TestSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 //    @Bean
-//    @ConditionalOnMissingBean
 //    @Qualifier("testUserDetailsService")
 //    public UserDetailsService userDetailsService(){
 //        GrantedAuthority authority = new SimpleGrantedAuthority("ADMIN");
