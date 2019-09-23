@@ -1,7 +1,7 @@
-package com.cloudlearning.cloud.models.members;
+package com.cloudlearning.cloud.models.members.student;
 
 import com.cloudlearning.cloud.models.Subject;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.cloudlearning.cloud.models.members.Member;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +9,7 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Set;
 
 @Entity
 @Table(name = "STUDENT")
@@ -17,9 +18,13 @@ import java.util.Collection;
 @EqualsAndHashCode(of = "id")
 public class Student extends Member {
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "STUDENT_SUBJECTS", joinColumns = @JoinColumn(name = "STUDENT_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "SUBJECT_ID", referencedColumnName = "ID"))
     @Where(clause = "IS_DELETED = false")
     private Collection<Subject> subjects;
+
+    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
+    private Set<StudentSubject> studentSubjects;
+
 
 }

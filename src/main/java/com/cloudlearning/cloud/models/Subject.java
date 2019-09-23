@@ -2,7 +2,8 @@ package com.cloudlearning.cloud.models;
 
 import com.cloudlearning.cloud.models.base.BasicEntity;
 import com.cloudlearning.cloud.models.members.Professor;
-import com.cloudlearning.cloud.models.members.Student;
+import com.cloudlearning.cloud.models.members.student.Student;
+import com.cloudlearning.cloud.models.members.student.StudentSubject;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -29,7 +30,6 @@ public class Subject extends BasicEntity {
     @Column(name = "ID")
     protected Long id;
 
-
     @NotNull(groups = {ValidationCreate.class}, message = "api.error.validation.name.isRequired")
     @Size(min = 3, message = "api.error.validation.name.minSizeLimitation.3")
     @Column(name = "NAME")
@@ -48,12 +48,14 @@ public class Subject extends BasicEntity {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long professorId;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "STUDENT_SUBJECTS", joinColumns = @JoinColumn(name = "SUBJECT_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "STUDENT_ID", referencedColumnName = "ID"))
     private Set<Student> students;
 
+    @OneToMany(mappedBy = "subject", fetch = FetchType.LAZY)
+    private Set<StudentSubject> studentSubjects;
+
     @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @Where(clause = "IS_DELETED = false")
     private Collection<Lesson> lessonsCollection;
 
 }

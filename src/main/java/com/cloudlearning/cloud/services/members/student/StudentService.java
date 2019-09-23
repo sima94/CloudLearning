@@ -1,6 +1,6 @@
 package com.cloudlearning.cloud.services.members.student;
 
-import com.cloudlearning.cloud.models.members.Student;
+import com.cloudlearning.cloud.models.members.student.Student;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

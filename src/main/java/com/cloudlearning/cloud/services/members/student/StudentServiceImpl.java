@@ -2,17 +2,14 @@ package com.cloudlearning.cloud.services.members.student;
 
 import com.cloudlearning.cloud.configuration.utils.authentication.AuthenticationFacade;
 import com.cloudlearning.cloud.global.exception.entity.EntityNotExistException;
-import com.cloudlearning.cloud.models.members.Professor;
-import com.cloudlearning.cloud.models.members.Student;
+import com.cloudlearning.cloud.models.members.student.Student;
 import com.cloudlearning.cloud.models.security.User;
-import com.cloudlearning.cloud.repositories.members.StudentRepository;
+import com.cloudlearning.cloud.repositories.members.student.StudentRepository;
 import com.cloudlearning.cloud.repositories.security.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class StudentServiceImpl implements StudentService {

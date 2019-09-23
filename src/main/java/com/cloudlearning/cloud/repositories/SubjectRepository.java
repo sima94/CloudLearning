@@ -19,6 +19,7 @@ public interface SubjectRepository extends SoftDeleteCrudRepository<Subject, Lon
     Page<Subject> findSubjectsByProfessorId(Long professorId, Pageable pageable);
 
     @Transactional
-    @Query("select e from #{#entityName} e left join e.students s where e.isDeleted = false and s.isDeleted = false and s.id = ?1  ")
+    @Query("select e from #{#entityName} e inner join e.studentSubjects as s  where e.isDeleted = false and s.isDeleted = false and s.student.isDeleted = false and s.isApproved = true and s.student.id = ?1 ")
     Page<Subject> findSubjectsByStudentsId(Long studentId, Pageable pageable);
+
 }

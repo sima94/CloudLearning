@@ -1,6 +1,7 @@
 package com.cloudlearning.cloud.controllers;
 
 import com.cloudlearning.cloud.models.Subject;
+import com.cloudlearning.cloud.models.members.student.StudentSubject;
 import com.cloudlearning.cloud.services.subject.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
