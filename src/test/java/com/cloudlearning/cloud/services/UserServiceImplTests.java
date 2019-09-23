@@ -1,15 +1,15 @@
 package com.cloudlearning.cloud.services;
 
 import com.cloudlearning.cloud.configuration.base.AbstractTests;
-import com.cloudlearning.cloud.configuration.encryption.Encoders;
+import com.cloudlearning.cloud.configuration.utils.encryption.Encoders;
 import com.cloudlearning.cloud.global.exception.entity.EntityAlreadyExistExeption;
 import com.cloudlearning.cloud.global.exception.entity.EntityNotExistException;
 import com.cloudlearning.cloud.models.security.Role;
 import com.cloudlearning.cloud.models.security.User;
-import com.cloudlearning.cloud.repositories.UserRepository;
-import com.cloudlearning.cloud.services.user.UserService;
-import com.cloudlearning.cloud.services.user.UserServiceImpl;
-import com.cloudlearning.cloud.repositories.RoleRepository;
+import com.cloudlearning.cloud.repositories.security.UserRepository;
+import com.cloudlearning.cloud.services.security.user.UserService;
+import com.cloudlearning.cloud.services.security.user.UserServiceImpl;
+import com.cloudlearning.cloud.repositories.security.RoleRepository;
 import com.sun.tools.javac.util.List;
 import org.junit.Test;
 import org.mockito.Mockito;

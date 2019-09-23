@@ -3,9 +3,12 @@ package com.cloudlearning.cloud.models.security;
 import com.cloudlearning.cloud.models.base.BasicEntity;
 import com.cloudlearning.cloud.configuration.validation.annotations.FieldsDiversity;
 import com.cloudlearning.cloud.configuration.validation.annotations.FieldsEquality;
+import com.cloudlearning.cloud.models.members.Member;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.tools.javac.util.List;
+import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +22,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Optional;
 
 @Entity
 @Table(name = "USER_", uniqueConstraints = { @UniqueConstraint(columnNames = { "USER_NAME" }) })
@@ -78,6 +82,10 @@ public class User extends BasicEntity implements UserDetails, Serializable {
     @NotNull(groups = {ValidationCreate.class}, message = "api.error.validation.role.isRequired")
     private Role role;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonBackReference
+    private Member member;
+
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -92,6 +100,10 @@ public class User extends BasicEntity implements UserDetails, Serializable {
     @Override
     public String getUsername() {
         return this.username;
+    }
+
+    public Optional<Member> getMember(){
+        return Optional.ofNullable(member);
     }
 
     @Override

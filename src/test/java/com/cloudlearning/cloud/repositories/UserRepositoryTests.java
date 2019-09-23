@@ -3,6 +3,7 @@ package com.cloudlearning.cloud.repositories;
 import com.cloudlearning.cloud.configuration.base.AbstractTests;
 import com.cloudlearning.cloud.models.security.Role;
 import com.cloudlearning.cloud.models.security.User;
+import com.cloudlearning.cloud.repositories.security.UserRepository;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;

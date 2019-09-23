@@ -6,11 +6,12 @@ import org.hibernate.annotations.Generated;
 import org.hibernate.annotations.GenerationTime;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @MappedSuperclass
 @Data
-public abstract class BasicEntity<ID extends Long> {
+public abstract class BasicEntity<ID extends Long> implements Serializable {
 
     @Column(name = "IS_DELETED")
     private boolean isDeleted = false;
