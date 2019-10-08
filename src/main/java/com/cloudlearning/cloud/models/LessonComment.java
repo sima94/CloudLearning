@@ -26,12 +26,14 @@ public class LessonComment extends BasicEntity {
     @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     private Member member;
 
-    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     @JoinColumn(name = "LESSON_CHAPTER_ID")
+    @Where(clause = "IS_DELETED = false")
     private LessonChapter lessonChapter;
 
-    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     @JoinColumn(name = "LESSON_COMMENT_ID")
+    @Where(clause = "IS_DELETED = false")
     private LessonComment lessonComment;
 
     @OneToMany(mappedBy = "lessonComment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

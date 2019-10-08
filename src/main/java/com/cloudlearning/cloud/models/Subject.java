@@ -41,6 +41,7 @@ public class Subject extends BasicEntity {
     private String description;
 
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @Where(clause = "IS_DELETED = false")
     private Professor professor;
 
     @NotNull(groups = {ValidationCreate.class}, message = "api.error.validation.professorId.isRequired")
@@ -50,12 +51,15 @@ public class Subject extends BasicEntity {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "STUDENT_SUBJECTS", joinColumns = @JoinColumn(name = "SUBJECT_ID", referencedColumnName = "ID"), inverseJoinColumns = @JoinColumn(name = "STUDENT_ID", referencedColumnName = "ID"))
+    @Where(clause = "IS_DELETED = false")
     private Set<Student> students;
 
     @OneToMany(mappedBy = "subject", fetch = FetchType.LAZY)
+    @Where(clause = "IS_DELETED = false")
     private Set<StudentSubject> studentSubjects;
 
     @OneToMany(mappedBy = "subject", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Where(clause = "IS_DELETED = false")
     private Collection<Lesson> lessonsCollection;
 
 }

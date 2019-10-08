@@ -11,7 +11,7 @@ import org.springframework.security.core.GrantedAuthority;
 @Table(name="ROLE", uniqueConstraints = {@UniqueConstraint(columnNames = {"NAME"})})
 @Getter
 @Setter
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "id", callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
 public class Role extends BasicEntity implements GrantedAuthority {

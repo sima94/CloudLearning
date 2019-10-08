@@ -25,7 +25,7 @@ public class LessonChapter extends BasicEntity {
     @Column(name = "TEXT")
     private String text;
 
-    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     @JoinColumn(name = "LESSON_ID")
     @Where(clause = "IS_DELETED = false")
     private Lesson lesson;

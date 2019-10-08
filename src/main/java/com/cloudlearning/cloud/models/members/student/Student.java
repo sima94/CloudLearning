@@ -24,6 +24,7 @@ public class Student extends Member {
     private Collection<Subject> subjects;
 
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
+    @Where(clause = "IS_DELETED = false")
     private Set<StudentSubject> studentSubjects;
 
 

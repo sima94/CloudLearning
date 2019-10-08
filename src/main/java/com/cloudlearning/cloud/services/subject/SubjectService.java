@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 
 public interface SubjectService {
 
+    Boolean isSubjectOwner(Long id, String username);
+
     Subject findById(Long id);
 
     Page<Subject> findAll(Pageable pageable);
