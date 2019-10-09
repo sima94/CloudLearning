@@ -48,6 +48,7 @@ public class LessonCommentServiceImpl implements LessonCommentService {
     }
 
     @Override
+    @PreAuthorize("#lessonComment.id == null or @lessonCommentServiceImpl.isLessonCommentOwner(#lessonComment.id, authentication.name)")
     public LessonComment replayLessonComment(LessonComment lessonComment) {
         LessonComment parentLessonComment = lessonCommentRepository.findById(lessonComment.getLessonComment().getId()).orElseThrow(()-> new EntityNotExistException("api.error.lesson.comment.replay.notFound"));
         Member member = memberRepository.findByUserUsername(authenticationFacade.getAuthentication().getName()).orElseThrow(()-> new EntityNotExistException("api.error.member.user.notFound"));
@@ -59,6 +60,7 @@ public class LessonCommentServiceImpl implements LessonCommentService {
     }
 
     @Override
+    @PreAuthorize("#lessonComment.id == null or @lessonCommentServiceImpl.isLessonCommentOwner(#lessonComment.id, authentication.name)")
     public LessonComment postLessonComment(LessonComment lessonComment) {
         LessonChapter lessonChapter = lessonChapterRepository.findById(lessonComment.getLessonChapter().getId()).orElseThrow( ()-> new EntityNotExistException("api.error.lessonChapter.notFound"));
         Member member = memberRepository.findByUserUsername(authenticationFacade.getAuthentication().getName()).orElseThrow(()-> new EntityNotExistException("api.error.member.user.notFound"));
