@@ -5,8 +5,6 @@ import com.cloudlearning.cloud.global.exception.entity.EntityNotExistException;
 import com.cloudlearning.cloud.models.Subject;
 import com.cloudlearning.cloud.models.members.Professor;
 import com.cloudlearning.cloud.models.members.student.Student;
-import com.cloudlearning.cloud.models.members.student.StudentSubject;
-import com.cloudlearning.cloud.models.security.User;
 import com.cloudlearning.cloud.repositories.SubjectRepository;
 import com.cloudlearning.cloud.repositories.members.ProfessorRepository;
 import com.cloudlearning.cloud.repositories.members.student.StudentRepository;
@@ -15,10 +13,7 @@ import com.cloudlearning.cloud.repositories.security.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class SubjectServiceImpl implements SubjectService {
@@ -40,6 +35,11 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Autowired
     private AuthenticationFacade authenticationFacade;
+
+    public Boolean isSubjectOwner(Long id, String username) {
+        Subject subject = subjectRepository.findById(id).orElseThrow( ()-> new EntityNotExistException("api.error.subject.notFound"));
+        return subject.getProfessor().getUser().getUsername().equals(username);
+    }
 
     @Override
     public Subject findById(Long id) {
@@ -65,9 +65,7 @@ public class SubjectServiceImpl implements SubjectService {
     public Subject create(Subject subject) {
 
         Professor professor = professorRepository.findById(subject.getProfessorId()).orElseThrow(()-> new EntityNotExistException("api.error.professor.notExist"));
-
         subject.setProfessor(professor);
-
         return subjectRepository.save(subject);
     }
 

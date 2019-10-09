@@ -42,7 +42,7 @@ public class Member extends BasicEntity {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date dateOfBirth;
 
-    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_ID")
     @Where(clause = "IS_DELETED = false")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

@@ -1,7 +1,6 @@
 package com.cloudlearning.cloud.controllers;
 
 import com.cloudlearning.cloud.models.Subject;
-import com.cloudlearning.cloud.models.members.student.StudentSubject;
 import com.cloudlearning.cloud.services.subject.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,7 +22,7 @@ public class SubjectController {
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
     @PreAuthorize("isAuthenticated()")
-    public Subject getSubject(@PathVariable Long id){
+    public Subject getSubject(@PathVariable Long id) {
         return subjectService.findById(id);
     }
 
@@ -31,7 +30,7 @@ public class SubjectController {
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
     @PreAuthorize("isAuthenticated()")
-    public Page<Subject> getSubjects(@PageableDefault Pageable pageable){
+    public Page<Subject> getSubjects(@PageableDefault Pageable pageable) {
         return subjectService.findAll(pageable);
     }
 
@@ -39,7 +38,7 @@ public class SubjectController {
     @ResponseStatus(value = HttpStatus.CREATED)
     @ResponseBody
     @PreAuthorize("hasRole('ADMIN')")
-    public Subject createUpdate(@Validated(value = {Subject.ValidationCreate.class}) @RequestBody Subject subject){
+    public Subject createSubject(@Validated(value = {Subject.ValidationCreate.class}) @RequestBody Subject subject){
         return subjectService.create(subject);
     }
 
@@ -64,6 +63,13 @@ public class SubjectController {
     @PreAuthorize("isAuthenticated()")
     public Page<Subject> getSubjectsByStudentId(@PathVariable Long studentId, @PageableDefault Pageable pageable){
         return subjectService.findAllForStudent(studentId, pageable);
+    }
+
+    @DeleteMapping(path = "/api/v1/subject/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN')")
+    public void deleteLesson(@PathVariable Long id){
+        subjectService.delete(id);
     }
 
 }

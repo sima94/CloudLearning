@@ -25,7 +25,7 @@ public class Lesson extends BasicEntity {
     @Column(name = "INTRO")
     private String intro;
 
-    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     @JoinColumn(name = "SUBJECT_ID")
     @Where(clause = "IS_DELETED = false")
     private Subject subject;

@@ -5,6 +5,7 @@ import com.cloudlearning.cloud.models.base.BasicEntity;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -35,10 +36,12 @@ public class StudentSubject extends BasicEntity {
 
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinColumn(name = "STUDENT_ID")
+    @Where(clause = "IS_DELETED = false")
     private Student student;
 
     @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinColumn(name = "SUBJECT_ID")
+    @Where(clause = "IS_DELETED = false")
     private Subject subject;
 
     @Column(name = "IS_APPROVED")
