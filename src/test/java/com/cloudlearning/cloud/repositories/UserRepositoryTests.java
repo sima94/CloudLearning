@@ -17,9 +17,6 @@ public class UserRepositoryTests extends AbstractTests {
     @Autowired
     UserRepository userRepository;
 
-    @Autowired
-    TestEntityManager entityManager;
-
     @Test
     public void whenFindByUsername_thenReturnUser() {
         // given
@@ -50,14 +47,17 @@ public class UserRepositoryTests extends AbstractTests {
         admin.setDeleted(true);
         admin.setRole(adminRole);
 
+        // when
         userRepository.save(admin);
 
-        assert userRepository.findByUsername("admin@test.com").isPresent() == false;
+        // then
+        assert !userRepository.findByUsername("admin@test.com").isPresent();
     }
 
     @Test
     public void whenFindByUsernameOrId_thenReturnUsers() {
 
+        // given
         User admin = new User();
         admin.setId(1L);
         admin.setUsername("admin@test.com");
@@ -72,9 +72,11 @@ public class UserRepositoryTests extends AbstractTests {
         professorRole.setId(2L);
         professor.setRole(professorRole);
 
+        // when
         userRepository.save(admin);
         userRepository.save(professor);
 
+        // then
         List<User> users = userRepository.findByUsernameOrId(admin.getUsername(),professor.getId());
         assert users.size() == 2;
     }

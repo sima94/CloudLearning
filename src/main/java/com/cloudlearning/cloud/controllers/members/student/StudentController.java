@@ -22,6 +22,7 @@ public class StudentController {
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
+    @PreAuthorize("isAuthenticated()")
     public Student getStudent(@PathVariable Long id){
         return studentService.findById(id);
     }
@@ -37,6 +38,7 @@ public class StudentController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
+    @PreAuthorize("isAuthenticated()")
     public Page<Student> getStudents(@PageableDefault Pageable pageable){
         return studentService.findAll(pageable);
     }

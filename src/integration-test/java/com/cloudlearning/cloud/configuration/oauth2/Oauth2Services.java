@@ -38,7 +38,6 @@ public class Oauth2Services {
 
         Map<String, String> map = objectMapper.convertValue(oauth2Request, new TypeReference<Map<String,String>>() {});
 
-        // Map to MultiValueMap
         LinkedMultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
         map.entrySet().forEach(e -> parameters.setAll(map));
 

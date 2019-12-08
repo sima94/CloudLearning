@@ -10,9 +10,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 @Configuration
 public class IntegrationTestConfiguration {
 
-    @Bean
-    @Qualifier("integrationTestUserDetailsService")
-    public UserDetailsService userDetailsService(){
-        return new UserServiceImpl();
-    }
+//    @Bean
+//    @Qualifier("integrationTestUserDetailsService")
+//    public UserDetailsService userDetailsService(){
+//        return new UserServiceImpl();
+//    }
 }

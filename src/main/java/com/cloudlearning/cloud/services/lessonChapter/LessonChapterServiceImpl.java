@@ -6,6 +6,7 @@ import com.cloudlearning.cloud.models.LessonChapter;
 import com.cloudlearning.cloud.repositories.LessonChapterRepository;
 import com.cloudlearning.cloud.repositories.LessonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -42,7 +43,10 @@ public class LessonChapterServiceImpl implements LessonChapterService {
     @Override
     @PreAuthorize("@lessonChapterServiceImpl.isLessonChapterOwner(#id, authentication.name)")
     public void delete(Long id) {
-        LessonChapter lessonChapter = lessonChapterRepository.findById(id).orElseThrow(()-> new EntityNotExistException("api.error.lessonChapter.notFound"));
-        lessonChapterRepository.delete(lessonChapter);
+        try {
+            lessonChapterRepository.deleteById(id);
+        }catch (EmptyResultDataAccessException e){
+            throw new EntityNotExistException("api.error.lessonChapter.notFound");
+        }
     }
 }

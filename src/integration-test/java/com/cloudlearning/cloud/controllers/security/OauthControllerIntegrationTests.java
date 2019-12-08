@@ -14,6 +14,7 @@ public class OauthControllerIntegrationTests extends AbstractControllerIntegrati
         Oauth2Response response = oauth2service.getToken(request);
 
         assert response.getAccessToken().length() > 0;
+        assert response.getRefreshToken().length() > 0;
     }
 
     @Test

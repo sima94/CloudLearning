@@ -2,18 +2,19 @@ package com.cloudlearning.cloud.configuration;
 
 import java.util.Arrays;
 
+import com.cloudlearning.cloud.configuration.utils.authentication.AuthenticationFacade;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.GlobalAuthenticationConfigurerAdapter;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -31,7 +32,6 @@ public class TestSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(SECURED_PATTERN);
     }
 
-
     @Configuration
     protected static class AuthenticationConfiguration extends
             GlobalAuthenticationConfigurerAdapter {
@@ -44,11 +44,21 @@ public class TestSecurityConfig extends WebSecurityConfigurerAdapter {
         }
     }
 
-//    @Bean
-//    @Qualifier("testUserDetailsService")
-//    public UserDetailsService userDetailsService(){
-//        GrantedAuthority authority = new SimpleGrantedAuthority("ADMIN");
-//        UserDetails userDetails = new User("admin", "admin", Arrays.asList(authority));
-//        return new InMemoryUserDetailsManager(Arrays.asList(userDetails));
-//    }
+    @Bean
+    @Qualifier("testUserDetailsService")
+    public UserDetailsService userDetailsService(){
+        GrantedAuthority authority = new SimpleGrantedAuthority("ADMIN");
+        UserDetails userDetails = new User("admin", "admin", Arrays.asList(authority));
+        return new InMemoryUserDetailsManager(Arrays.asList(userDetails));
+    }
+
+    @Bean
+    AuthenticationFacade authenticationFacade(){
+        return new AuthenticationFacade(){
+            @Override
+            public Authentication getAuthentication() {
+                return SecurityContextHolder.getContext().getAuthentication();
+            }
+        };
+    }
 }

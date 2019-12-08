@@ -3,11 +3,16 @@ package com.cloudlearning.cloud.controllers.security;
 import com.cloudlearning.cloud.configuration.oauth2.Oauth2Request;
 import com.cloudlearning.cloud.configuration.oauth2.Oauth2Response;
 import com.cloudlearning.cloud.controllers.base.AbstractControllerIntegrationTests;
+import com.cloudlearning.cloud.models.members.Member;
 import com.cloudlearning.cloud.models.security.Role;
 import com.cloudlearning.cloud.models.security.User;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.hamcrest.collection.IsCollectionWithSize;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -26,14 +31,14 @@ public class UserControllerIntegrationTest extends AbstractControllerIntegration
         Oauth2Response response = oauth2service.getToken(request);
 
         String token = response.accessToken();
-        Long userId = 3L;
+        Long userId = 4L;
 
         ResultActions result = mvc.perform(MockMvcRequestBuilders
                 .get("/api/v1/user/{id}",userId)
                 .header("Authorization", token));
 
         result.andDo(MockMvcResultHandlers.print()).andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(3))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(4))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.username").value("admin@integration.test"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.enabled").value(true))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.role.name").value("ROLE_ADMIN"));
@@ -72,7 +77,7 @@ public class UserControllerIntegrationTest extends AbstractControllerIntegration
                 .header("Authorization", token));
 
         result.andDo(MockMvcResultHandlers.print()).andDo(MockMvcResultHandlers.print()).andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.content", IsCollectionWithSize.hasSize(5)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.content", IsCollectionWithSize.hasSize(6)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].username").value("admin"))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].enabled").value(true))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.content[0].role.name").value("ROLE_ADMIN"));
@@ -116,7 +121,7 @@ public class UserControllerIntegrationTest extends AbstractControllerIntegration
         Oauth2Response response = oauth2service.getToken(request);
 
         String token = response.accessToken();
-        Long userId = 5L;
+        Long userId = 3L;
 
         User user = new User();
         user.setUsername("studentUpdate@integration.test");
@@ -127,6 +132,7 @@ public class UserControllerIntegrationTest extends AbstractControllerIntegration
         user.setRole(studentRole);
 
         ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.isEnabled(MapperFeature.USE_ANNOTATIONS);
         objectMapper.disable(MapperFeature.USE_ANNOTATIONS);
 
         ResultActions result = mvc.perform(MockMvcRequestBuilders
