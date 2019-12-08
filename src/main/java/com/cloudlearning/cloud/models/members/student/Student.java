@@ -27,5 +27,4 @@ public class Student extends Member {
     @Where(clause = "IS_DELETED = false")
     private Set<StudentSubject> studentSubjects;
 
-
 }

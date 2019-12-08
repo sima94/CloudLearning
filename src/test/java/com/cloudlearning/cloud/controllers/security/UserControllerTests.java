@@ -76,12 +76,11 @@ public class UserControllerTests extends AbstractControllerTests {
 
     @Test
     @WithAnonymousUser
-    public void whenTryToGetUser_withPROFESSRforUSEReauthorises_thanReturnForbidden() throws Exception {
+    public void whenTryToGetUser_withWrongAuthorises_thanReturnForbidden() throws Exception {
 
         User user = new User();
         user.setId(1L);
         user.setUsername("member@test.com");
-
 
         Mockito.when(userService.find(user.getId())).thenReturn(user);
 

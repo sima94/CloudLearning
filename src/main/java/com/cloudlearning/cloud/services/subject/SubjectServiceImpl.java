@@ -8,18 +8,14 @@ import com.cloudlearning.cloud.models.members.student.Student;
 import com.cloudlearning.cloud.repositories.SubjectRepository;
 import com.cloudlearning.cloud.repositories.members.ProfessorRepository;
 import com.cloudlearning.cloud.repositories.members.student.StudentRepository;
-import com.cloudlearning.cloud.repositories.members.student.StudentSubjectRepository;
-import com.cloudlearning.cloud.repositories.security.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SubjectServiceImpl implements SubjectService {
-
-    @Autowired
-    UserRepository userRepository;
 
     @Autowired
     SubjectRepository subjectRepository;
@@ -29,9 +25,6 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Autowired
     StudentRepository studentRepository;
-
-    @Autowired
-    StudentSubjectRepository studentSubjectRepository;
 
     @Autowired
     private AuthenticationFacade authenticationFacade;
@@ -82,6 +75,10 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     public void delete(Long id) {
-        subjectRepository.deleteById(id);
+        try {
+            subjectRepository.deleteById(id);
+        }catch (EmptyResultDataAccessException e){
+            throw new EntityNotExistException("api.error.subject.notExist");
+        }
     }
 }

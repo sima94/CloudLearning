@@ -5,6 +5,7 @@ import com.cloudlearning.cloud.models.Lesson;
 import com.cloudlearning.cloud.repositories.LessonRepository;
 import com.cloudlearning.cloud.repositories.SubjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -41,7 +42,11 @@ public class LessonServiceImpl implements LessonService {
     @Override
     @PreAuthorize("@lessonServiceImpl.isLessonOwner(#id, authentication.name)")
     public void delete(Long id) {
-        Lesson lesson = lessonRepository.findById(id).orElseThrow(()-> new EntityNotExistException("api.error.lesson.notFound"));
-        lessonRepository.delete(lesson);
+        try {
+            lessonRepository.deleteById(id);
+        }catch (EmptyResultDataAccessException e){
+            throw new EntityNotExistException("api.error.lesson.notFound");
+        }
+
     }
 }

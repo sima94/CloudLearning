@@ -23,7 +23,7 @@ public class LessonController {
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody
     @PreAuthorize("isAuthenticated()")
-    public Page<Lesson> getLesson(@PathVariable Long id, @PageableDefault Pageable pageable) {
+    public Page<Lesson> getLessons(@PathVariable Long id, @PageableDefault Pageable pageable) {
         return lessonService.findLessons(id, pageable);
     }
 

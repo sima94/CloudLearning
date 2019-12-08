@@ -4,6 +4,7 @@ import com.cloudlearning.cloud.global.exception.entity.EntityNotExistException;
 import com.cloudlearning.cloud.models.members.student.StudentSubject;
 import com.cloudlearning.cloud.repositories.members.student.StudentSubjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,7 +32,11 @@ public class StudentSubjectServiceImpl implements StudentSubjectService {
     @Override
     @PreAuthorize("@studentSubjectServiceImpl.isStudentSubjectOwner(#id, authentication.name)")
     public void deleteStudentSubject(Long id) {
-        studentSubjectRepository.deleteById(id);
+        try {
+            studentSubjectRepository.deleteById(id);
+        }catch (EmptyResultDataAccessException e){
+            throw new EntityNotExistException("api.error.student.subject.notExist");
+        }
     }
 
     @Override

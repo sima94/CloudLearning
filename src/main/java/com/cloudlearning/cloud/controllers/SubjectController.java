@@ -68,7 +68,7 @@ public class SubjectController {
     @DeleteMapping(path = "/api/v1/subject/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN')")
-    public void deleteLesson(@PathVariable Long id){
+    public void deleteSubject(@PathVariable Long id){
         subjectService.delete(id);
     }
 

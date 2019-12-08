@@ -359,7 +359,7 @@ public class UserServiceImplTests extends AbstractTests {
         PageRequest pageable = PageRequest.of(1,1);
 
 
-        PageImpl<User> usersPage = new PageImpl(List.of(testUser1),pageable,3L);
+        PageImpl<User> usersPage = new PageImpl<>(List.of(testUser1),pageable,3L);
 
         Mockito.when(userRepositoryMock.findAll(pageable)).thenReturn(usersPage);
 
