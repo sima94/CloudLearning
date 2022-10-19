@@ -21,7 +21,7 @@
         <spring.hateoas.version>0.24.0.RELEASE</spring.hateoas.version>
         <hibernate.version>5.4.2.Final</hibernate.version>
         <flywaydb.version>5.2.4</flywaydb.version>
-        <jackson.version>2.10.0.pr1</jackson.version>
+        <jackson.version>2.13.4.1</jackson.version>
         <lombok.version>1.18.8</lombok.version>
         <oauth2.version>2.3.6.RELEASE</oauth2.version>
     </properties>
